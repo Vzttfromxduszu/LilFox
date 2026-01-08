@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>精酿知识 - 定制专属精酿</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #fce0ba 0%, #fee7b7 50%, #fce0ba 100%);
+        color: #4a2b12;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(255, 248, 239, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(255, 248, 239, 0.2) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #4a2b12;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(74, 43, 18, 0.1);
+        position: relative;
+        letter-spacing: 2px;
+      }
+
+      .back-btn {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 18px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      .section {
+        background: #fff8ef;
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        padding: 35px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(74, 43, 18, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        margin-bottom: 30px;
+        color: #4a2b12;
+        border-bottom: 3px solid #4a2b12;
+        padding-bottom: 15px;
+        font-size: 1.8rem;
+        font-weight: 600;
+        position: relative;
+        letter-spacing: 1px;
+      }
+
+      h2::before {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #4a2b12;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4a2b12;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      input[type="text"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #d4b896;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        background: #fff8ef;
+        color: #4a2b12;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #4a2b12;
+        box-shadow: 0 0 0 3px rgba(74, 43, 18, 0.1);
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      button[type="submit"] {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 18px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      button[type="submit"]:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .response {
+        margin-top: 30px;
+        padding: 20px;
+        background: #fff8ef;
+        border-radius: 8px;
+        border-left: 4px solid #d4af37;
+        min-height: 100px;
+      }
+
+      .loading {
+        text-align: center;
+        color: #4a2b12;
+        font-size: 1.1rem;
+        padding: 20px;
+      }
+
+      .error {
+        color: #c0392b;
+        padding: 15px;
+        background: #fdeaea;
+        border-radius: 8px;
+        border-left: 4px solid #c0392b;
+      }
+
+      .summary-container {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .expert-summary {
+        background: linear-gradient(135deg, #fff8ef 0%, #fff5e6 100%);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid #d4af37;
+        box-shadow: 0 2px 8px rgba(74, 43, 18, 0.08);
+      }
+
+      .summary-label {
+        font-size: 0.85rem;
+        color: #8b6914;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .summary-text {
+        font-size: 1.1rem;
+        color: #4a2b12;
+        line-height: 1.6;
+        font-weight: 500;
+      }
+
+      .definition-module {
+        background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid #d4af37;
+        box-shadow: 0 2px 8px rgba(74, 43, 18, 0.08);
+      }
+
+      .definition-header {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+      }
+
+      .definition-title {
+        font-size: 0.9rem;
+        color: #8b6914;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .definition-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .definition-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .definition-label {
+        font-size: 0.9rem;
+        color: #8b6914;
+        font-weight: 600;
+        min-width: 50px;
+        flex-shrink: 0;
+      }
+
+      .definition-value {
+        font-size: 0.95rem;
+        color: #4a2b12;
+        line-height: 1.5;
+        flex: 1;
+      }
+
+      .characteristics-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .characteristic-tag {
+        background: linear-gradient(135deg, #d4af37 0%, #c9a227 100%);
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(212, 175, 55, 0.3);
+      }
+
+      .core-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .metric-card {
+        background: linear-gradient(135deg, #4a2b12 0%, #6b3d1e 100%);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(74, 43, 18, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(74, 43, 18, 0.3);
+      }
+
+      .metric-label {
+        font-size: 0.85rem;
+        color: #ceb288;
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .flavor-tags {
+        margin-bottom: 20px;
+      }
+
+      .tags-label {
+        font-size: 0.85rem;
+        color: #4a2b12;
+        font-weight: 600;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .flavor-tag {
+        background: linear-gradient(135deg, #fff8ef 0%, #fff5e6 100%);
+        border: 2px solid #d4b896;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        color: #4a2b12;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(74, 43, 18, 0.08);
+      }
+
+      .flavor-tag:hover {
+        background: linear-gradient(135deg, #4a2b12 0%, #6b3d1e 100%);
+        color: #fff;
+        border-color: #4a2b12;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(74, 43, 18, 0.2);
+      }
+
+      .accordion {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(74, 43, 18, 0.08);
+        margin-top: 20px;
+      }
+
+      .accordion-header {
+        width: 100%;
+        background: linear-gradient(135deg, #fff8ef 0%, #fff5e6 100%);
+        border: none;
+        padding: 18px 20px;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #4a2b12;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      .accordion-header:hover {
+        background: linear-gradient(135deg, #fff5e6 0%, #fff0d9 100%);
+      }
+
+      .accordion-header.active {
+        background: linear-gradient(135deg, #4a2b12 0%, #6b3d1e 100%);
+        color: #fff;
+      }
+
+      .accordion-icon {
+        transition: transform 0.3s ease;
+        font-size: 0.8rem;
+      }
+
+      .accordion-header.active .accordion-icon {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+        background: #fff8ef;
+      }
+
+      .accordion-content.active {
+        max-height: 2000px;
+        transition: max-height 0.6s ease-in;
+      }
+
+      .content-inner {
+        padding: 20px;
+        line-height: 1.8;
+        color: #4a2b12;
+        word-wrap: break-word;
+        font-family: inherit;
+        text-align: justify;
+      }
+
+      .content-inner p {
+        margin-bottom: 16px;
+        text-indent: 2em;
+      }
+
+      .content-inner p:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 768px) {
+        .core-metrics {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .metric-value {
+          font-size: 1.6rem;
+        }
+
+        .summary-text {
+          font-size: 1rem;
+        }
+
+        .flavor-tag {
+          padding: 6px 12px;
+          font-size: 0.85rem;
+        }
+
+        .definition-module {
+          padding: 15px;
+        }
+
+        .definition-item {
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .definition-label {
+          min-width: auto;
+        }
+
+        .characteristic-tag {
+          padding: 3px 10px;
+          font-size: 0.8rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px 15px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        .section {
+          padding: 25px 20px;
+        }
+
+        button[type="submit"] {
+          padding: 12px 30px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="back-btn">← 返回主页</a>
+      
+      <h1>精酿知识小问答</h1>
+      
+      <div class="section">
+        <form id="knowledge-form">
+          <div class="form-group">
+            <label for="question">您的问题</label>
+            <textarea id="question" name="question" placeholder="例如：什么是IPA啤酒？" required></textarea>
+          </div>
+          <button type="submit">获取答案</button>
+        </form>
+        <div id="knowledge-response" class="response"></div>
+      </div>
+    </div>
+
+    <script>
+      class BeerKnowledgeApp {
+        constructor() {
+          this.API_BASE_URL = 'http://localhost:8001/api/v1/beer';
+          this.selectedScenario = this.getScenarioFromURL();
+          this.init();
+        }
+
+        getScenarioFromURL() {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get('scenario') || 'explore';
+        }
+
+        init() {
+          this.bindFormEvents();
+          this.addFormValidation();
+        }
+
+        bindFormEvents() {
+          const form = document.getElementById('knowledge-form');
+          form.addEventListener('submit', async (e) => {
+            await this.handleFormSubmit(e);
+          });
+        }
+
+        async handleFormSubmit(e) {
+          e.preventDefault();
+          
+          const form = e.target;
+          const responseDiv = document.getElementById('knowledge-response');
+          const submitButton = form.querySelector('button[type="submit"]');
+          
+          if (!this.validateForm(form)) {
+            return;
+          }
+          
+          responseDiv.innerHTML = '';
+          this.showLoading(responseDiv);
+          
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = '处理中...';
+          }
+          
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData);
+          
+          const filteredData = {};
+          for (const [key, value] of Object.entries(data)) {
+            if (value !== '') {
+              filteredData[key] = value;
+            }
+          }
+          
+          if (this.selectedScenario) {
+            filteredData.scenario = this.selectedScenario;
+          }
+          
+          try {
+            let url = `${this.API_BASE_URL}/knowledge`;
+            
+            console.log('发送请求到:', url);
+            console.log('请求数据:', filteredData);
+            
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(filteredData)
+            });
+            
+            console.log('响应状态:', response.status);
+            
+            if (!response.ok) {
+              throw new Error(`HTTP错误！状态：${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('响应数据:', result);
+            this.processKnowledgeResponse(result, responseDiv);
+            
+          } catch (error) {
+            console.error('请求错误:', error);
+            this.showError(responseDiv, error.message);
+          } finally {
+            this.hideLoading(responseDiv);
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = '获取答案';
+            }
+          }
+        }
+
+        validateField(field) {
+          const value = field.value.trim();
+          const isValid = value !== '';
+          
+          if (!isValid && field.hasAttribute('required')) {
+            field.style.borderColor = '#c0392b';
+          } else {
+            field.style.borderColor = '#d4b896';
+          }
+          
+          return isValid;
+        }
+
+        validateForm(form) {
+          const requiredFields = form.querySelectorAll('[required]');
+          let isValid = true;
+          
+          requiredFields.forEach(field => {
+            if (!this.validateField(field)) {
+              isValid = false;
+            }
+          });
+          
+          return isValid;
+        }
+
+        addFormValidation() {
+          const inputs = document.querySelectorAll('input[required], textarea[required]');
+          
+          inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+              this.validateField(input);
+            });
+            
+            input.addEventListener('input', () => {
+              if (input.value.trim() !== '') {
+                input.style.borderColor = '#d4b896';
+              }
+            });
+          });
+        }
+
+        showLoading(element) {
+          element.innerHTML = '<div class="loading">正在为您解答...</div>';
+        }
+
+        hideLoading(element) {
+          const loading = element.querySelector('.loading');
+          if (loading) {
+            loading.remove();
+          }
+        }
+
+        showError(element, message) {
+          element.innerHTML = `<div class="error">❌ ${message}</div>`;
+        }
+
+        processKnowledgeResponse(result, element) {
+          if (result.answer) {
+            const summary = this.extractCleanedSummary(result.answer);
+            element.innerHTML = this.renderSummaryMode(summary, summary.cleanedAnswer);
+          } else {
+            element.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+          }
+        }
+
+        parseAnswerSummary(answer) {
+          const summary = {
+            abv: this.extractABV(answer),
+            ibu: this.extractIBU(answer),
+            keywords: this.extractKeywords(answer),
+            expertSummary: this.generateExpertSummary(answer),
+            hasDetails: this.hasDetailedContent(answer)
+          };
+          return summary;
+        }
+
+        extractABV(text) {
+          const abvPattern = /(\d+(?:\.\d+)?)\s*%?\s*(?:ABV|酒精度|酒精)/i;
+          const match = text.match(abvPattern);
+          return match ? match[1] + '%' : null;
+        }
+
+        extractIBU(text) {
+          const ibuPattern = /(\d+)\s*(?:IBU|苦度|国际苦度单位)/i;
+          const match = text.match(ibuPattern);
+          return match ? match[1] : null;
+        }
+
+        extractKeywords(text) {
+          const flavorKeywords = [
+            '柑橘', '松木', '焦糖', '巧克力', '咖啡', '热带水果', 
+            '花香', '麦芽', '果香', '坚果', '香草', '烟熏',
+            '苦味', '甜味', '酸味', '清爽', '醇厚', '轻盈',
+            '小麦', '黑啤', '拉格', '艾尔', 'IPA', '世涛'
+          ];
+          
+          const foundKeywords = [];
+          flavorKeywords.forEach(keyword => {
+            if (text.includes(keyword)) {
+              foundKeywords.push(keyword);
+            }
+          });
+          
+          return foundKeywords.length > 0 ? foundKeywords.slice(0, 6) : ['精酿'];
+        }
+
+        generateExpertSummary(text) {
+          const sentences = text.split(/[。！？\n]/).filter(s => s.trim().length > 10);
+          
+          if (sentences.length > 0) {
+            const summarySentence = sentences.find(s => 
+              s.includes('特点') || s.includes('风味') || s.includes('适合') || 
+              s.includes('推荐') || s.includes('建议')
+            ) || sentences[0];
+            
+            return summarySentence.trim() + '。';
+          }
+          
+          return '这款啤酒具有独特的风味特点，值得一试。';
+        }
+
+        hasDetailedContent(text) {
+          const detailKeywords = ['历史', '起源', '工艺', '生产', '酿造', '发展', '传统'];
+          return detailKeywords.some(keyword => text.includes(keyword));
+        }
+
+        cleanMarkdownText(text) {
+          let cleaned = text;
+          
+          cleaned = cleaned.replace(/^#{1,6}\s+/gm, '');
+          cleaned = cleaned.replace(/\*\*(.*?)\*\*/g, '$1');
+          cleaned = cleaned.replace(/\*(.*?)\*/g, '$1');
+          cleaned = cleaned.replace(/~~(.*?)~~/g, '$1');
+          cleaned = cleaned.replace(/`{1,3}(.*?)`{1,3}/g, '$1');
+          cleaned = cleaned.replace(/---+/g, '');
+          cleaned = cleaned.replace(/^\s*[-*+]\s+/gm, '');
+          cleaned = cleaned.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+          cleaned = cleaned.replace(/^>\s+/gm, '');
+          
+          return cleaned;
+        }
+
+        removeNumberedLists(text) {
+          let cleaned = text;
+          
+          cleaned = cleaned.replace(/^\s*\d+\.\s+/gm, '');
+          cleaned = cleaned.replace(/^\s*\d+\)\s+/gm, '');
+          cleaned = cleaned.replace(/^\s*[a-zA-Z]\.\s+/gm, '');
+          cleaned = cleaned.replace(/^\s*[ivxIVX]+\.\s+/gm, '');
+          
+          return cleaned;
+        }
+
+        truncateParagraphs(text, maxLength = 100) {
+          const paragraphs = text.split(/\n\n+/);
+          const truncated = paragraphs.map(paragraph => {
+            const cleanParagraph = paragraph.replace(/\n/g, ' ').trim();
+            if (cleanParagraph.length > maxLength) {
+              const truncatedText = cleanParagraph.substring(0, maxLength);
+              const lastSpace = truncatedText.lastIndexOf(' ');
+              if (lastSpace > maxLength * 0.7) {
+                return truncatedText.substring(0, lastSpace) + '...';
+              }
+              return truncatedText + '...';
+            }
+            return cleanParagraph;
+          });
+          
+          return truncated.join('\n\n');
+        }
+
+        formatTextForDisplay(text) {
+          let formatted = text;
+          
+          formatted = this.cleanMarkdownText(formatted);
+          formatted = this.removeNumberedLists(formatted);
+          formatted = this.truncateParagraphs(formatted, 100);
+          
+          formatted = formatted.replace(/\n{3,}/g, '\n\n');
+          formatted = formatted.trim();
+          
+          return formatted;
+        }
+
+        extractCleanedSummary(answer) {
+          const cleanedAnswer = this.formatTextForDisplay(answer);
+          const summary = {
+            abv: this.extractABV(answer),
+            ibu: this.extractIBU(answer),
+            keywords: this.extractKeywords(answer),
+            expertSummary: this.generateExpertSummary(cleanedAnswer),
+            hasDetails: this.hasDetailedContent(answer),
+            cleanedAnswer: cleanedAnswer,
+            definition: this.extractDefinition(answer)
+          };
+          return summary;
+        }
+
+        extractDefinition(text) {
+          const definition = {
+            name: this.extractBeerName(text),
+            abv: this.extractABV(text),
+            ibu: this.extractIBU(text),
+            flavor: this.extractFlavorProfile(text),
+            characteristics: this.extractCharacteristics(text),
+            style: this.extractBeerStyle(text)
+          };
+          return definition;
+        }
+
+        extractBeerName(text) {
+          const namePatterns = [
+            /(?:啤酒|饮品|西打|精酿)[：:]\s*([^\n，,。]+)/,
+            /(?:这款|这种|该)[^\n]{0,10}(啤酒|西打|饮品)/,
+            /^([^\n]{2,20})(?:啤酒|西打|饮品)/
+          ];
+          
+          for (const pattern of namePatterns) {
+            const match = text.match(pattern);
+            if (match) {
+              return match[1].trim();
+            }
+          }
+          
+          return '精酿啤酒';
+        }
+
+        extractFlavorProfile(text) {
+          const flavorPatterns = [
+            /(?:风味|口感|味道)[：:]\s*([^\n。]+)/,
+            /(?:具有|带有|呈现)([^。]{0,30})(?:风味|口感|味道)/,
+            /(?:柑橘|松木|焦糖|巧克力|咖啡|热带水果|花香|麦芽|果香|坚果|香草|烟熏|苦味|甜味|酸味|清爽|醇厚|轻盈)[^。]{0,20}/
+          ];
+          
+          for (const pattern of flavorPatterns) {
+            const match = text.match(pattern);
+            if (match) {
+              return match[0].trim();
+            }
+          }
+          
+          return '独特风味';
+        }
+
+        extractCharacteristics(text) {
+          const characteristics = [];
+          
+          const characteristicPatterns = [
+            { pattern: /清爽|轻盈|干净/g, label: '清爽' },
+            { pattern: /醇厚|浓郁|厚重/g, label: '醇厚' },
+            { pattern: /苦味|苦涩/g, label: '苦味' },
+            { pattern: /甜味|甘甜/g, label: '甜味' },
+            { pattern: /酸味|酸爽/g, label: '酸味' },
+            { pattern: /果香|水果/g, label: '果香' },
+            { pattern: /花香|花香/g, label: '花香' },
+            { pattern: /麦芽|麦香/g, label: '麦香' }
+          ];
+          
+          characteristicPatterns.forEach(({ pattern, label }) => {
+            if (pattern.test(text)) {
+              characteristics.push(label);
+            }
+          });
+          
+          return characteristics.length > 0 ? characteristics.slice(0, 4) : ['独特'];
+        }
+
+        extractBeerStyle(text) {
+          const stylePatterns = [
+            /(?:IPA|印度淡色艾尔)/i,
+            /(?:世涛|Stout)/i,
+            /(?:艾尔|Ale)/i,
+            /(?:拉格|Lager)/i,
+            /(?:小麦|Wheat)/i,
+            /(?:西打|Cider)/i,
+            /(?:黑啤|Black)/i,
+            /(?:白啤|White)/i
+          ];
+          
+          for (const pattern of stylePatterns) {
+            if (pattern.test(text)) {
+              return pattern.source.replace(/[\/\\()]/g, '').trim();
+            }
+          }
+          
+          return '精酿';
+        }
+
+        renderSummaryMode(summary, fullAnswer) {
+          let html = '<div class="summary-container">';
+          
+          html += '<div class="expert-summary">';
+          html += `<div class="summary-label">🎯 专家总结</div>`;
+          html += `<div class="summary-text">${summary.expertSummary}</div>`;
+          html += '</div>';
+          
+          if (summary.definition) {
+            html += '<div class="definition-module">';
+            html += '<div class="definition-header">';
+            html += '<span class="definition-title">📋 定义</span>';
+            html += '</div>';
+            html += '<div class="definition-content">';
+            
+            if (summary.definition.name) {
+              html += `<div class="definition-item">
+                <span class="definition-label">名称：</span>
+                <span class="definition-value">${summary.definition.name}</span>
+              </div>`;
+            }
+            
+            if (summary.definition.style) {
+              html += `<div class="definition-item">
+                <span class="definition-label">类型：</span>
+                <span class="definition-value">${summary.definition.style}</span>
+              </div>`;
+            }
+            
+            if (summary.definition.flavor) {
+              html += `<div class="definition-item">
+                <span class="definition-label">风味：</span>
+                <span class="definition-value">${summary.definition.flavor}</span>
+              </div>`;
+            }
+            
+            if (summary.definition.characteristics && summary.definition.characteristics.length > 0) {
+              html += `<div class="definition-item">
+                <span class="definition-label">特点：</span>
+                <div class="characteristics-tags">`;
+              summary.definition.characteristics.forEach(char => {
+                html += `<span class="characteristic-tag">${char}</span>`;
+              });
+              html += '</div></div>';
+            }
+            
+            html += '</div>';
+            html += '</div>';
+          }
+          
+          if (summary.abv || summary.ibu) {
+            html += '<div class="core-metrics">';
+            if (summary.abv) {
+              html += `<div class="metric-card clickable" onclick="this.showParameterDetail('abv', '${summary.abv}')">
+                <div class="metric-label">酒精度</div>
+                <div class="metric-value">${summary.abv}</div>
+              </div>`;
+            }
+            if (summary.ibu) {
+              html += `<div class="metric-card clickable" onclick="this.showParameterDetail('ibu', '${summary.ibu}')">
+                <div class="metric-label">苦度</div>
+                <div class="metric-value">${summary.ibu}</div>
+              </div>`;
+            }
+            html += '</div>';
+          }
+          
+          if (summary.keywords.length > 0) {
+            html += '<div class="flavor-tags">';
+            html += '<div class="tags-label">🏷️ 风味标签</div>';
+            html += '<div class="tags-container">';
+            summary.keywords.forEach(keyword => {
+              html += `<span class="flavor-tag clickable" onclick="this.showKeywordDetail('${keyword}')">${keyword}</span>`;
+            });
+            html += '</div>';
+            html += '</div>';
+          }
+          
+          html += '<div class="parameter-detail-panel" id="parameter-detail-panel" style="display: none;">';
+          html += '<div class="detail-panel-header">';
+          html += '<span class="detail-panel-title" id="detail-panel-title"></span>';
+          html += '<button class="detail-close-btn" onclick="this.closeParameterDetail()">✕</button>';
+          html += '</div>';
+          html += '<div class="detail-panel-content" id="detail-panel-content"></div>';
+          html += '</div>';
+          
+          if (summary.hasDetails) {
+            html += '<div class="accordion">';
+            html += '<button class="accordion-header" onclick="this.classList.toggle(\'active\'); this.nextElementSibling.classList.toggle(\'active\');">';
+            html += '<span>📖 详细背景</span>';
+            html += '<span class="accordion-icon">▼</span>';
+            html += '</button>';
+            html += '<div class="accordion-content">';
+            
+            const paragraphs = fullAnswer.split('\n\n').filter(p => p.trim());
+            html += '<div class="content-inner">';
+            paragraphs.forEach(paragraph => {
+              const cleanParagraph = paragraph.trim();
+              if (cleanParagraph) {
+                html += `<p>${cleanParagraph}</p>`;
+              }
+            });
+            html += '</div>';
+            
+            html += '</div>';
+            html += '</div>';
+          }
+          
+          html += '</div>';
+          
+          return html;
+        }
+
+        showParameterDetail(type, value) {
+          const panel = document.getElementById('parameter-detail-panel');
+          const title = document.getElementById('detail-panel-title');
+          const content = document.getElementById('detail-panel-content');
+          
+          const detailInfo = this.getParameterDetailInfo(type, value);
+          
+          title.textContent = detailInfo.title;
+          content.innerHTML = detailInfo.content;
+          
+          panel.style.display = 'block';
+          panel.style.animation = 'slideIn 0.3s ease-out';
+          
+          setTimeout(() => {
+            panel.style.animation = '';
+          }, 300);
+        }
+
+        showKeywordDetail(keyword) {
+          const panel = document.getElementById('parameter-detail-panel');
+          const title = document.getElementById('detail-panel-title');
+          const content = document.getElementById('detail-panel-content');
+          
+          const detailInfo = this.getKeywordDetailInfo(keyword);
+          
+          title.textContent = detailInfo.title;
+          content.innerHTML = detailInfo.content;
+          
+          panel.style.display = 'block';
+          panel.style.animation = 'slideIn 0.3s ease-out';
+          
+          setTimeout(() => {
+            panel.style.animation = '';
+          }, 300);
+        }
+
+        closeParameterDetail() {
+          const panel = document.getElementById('parameter-detail-panel');
+          panel.style.animation = 'slideOut 0.3s ease-out';
+          
+          setTimeout(() => {
+            panel.style.display = 'none';
+            panel.style.animation = '';
+          }, 300);
+        }
+
+        getParameterDetailInfo(type, value) {
+          const abvInfo = {
+            title: `酒精度 (ABV): ${value}`,
+            content: `
+              <div class="detail-section">
+                <h4>📊 酒精度说明</h4>
+                <p>ABV (Alcohol By Volume) 表示啤酒中酒精含量的百分比。</p>
+              </div>
+              <div class="detail-section">
+                <h4>🎯 酒精度分类</h4>
+                <ul>
+                  <li><strong>低度 (3-4%)</strong>：适合轻松饮用，如小麦啤、拉格</li>
+                  <li><strong>中度 (5-7%)</strong>：常见于大多数精酿啤酒</li>
+                  <li><strong>高度 (8-12%)</strong>：如双倍IPA、世涛等</li>
+                  <li><strong>超高 (12%+)</strong>：如大麦酒、四倍IPA</li>
+                </ul>
+              </div>
+              <div class="detail-section">
+                <h4>💡 饮用建议</h4>
+                <p>当前酒精度 ${value}，${parseFloat(value) < 5 ? '适合轻松畅饮，适合社交场合' : parseFloat(value) < 8 ? '属于中度啤酒，适合慢慢品味' : '属于高度啤酒，建议适量饮用，慢慢欣赏'}</p>
+              </div>
+            `
+          };
+
+          const ibuInfo = {
+            title: `苦度 (IBU): ${value}`,
+            content: `
+              <div class="detail-section">
+                <h4>📊 苦度说明</h4>
+                <p>IBU (International Bitterness Units) 是国际苦度单位，用于衡量啤酒的苦味强度。</p>
+              </div>
+              <div class="detail-section">
+                <h4>🎯 苦度分类</h4>
+                <ul>
+                  <li><strong>极低 (0-10)</strong>：几乎无苦味，如水果啤酒</li>
+                  <li><strong>低 (11-25)</strong>：轻微苦味，如小麦啤、拉格</li>
+                  <li><strong>中等 (26-40)</strong>：平衡苦味，如艾尔</li>
+                  <li><strong>高 (41-60)</strong>：明显苦味，如IPA</li>
+                  <li><strong>极高 (61+)</strong>：强烈苦味，如双倍IPA</li>
+                </ul>
+              </div>
+              <div class="detail-section">
+                <h4>💡 饮用建议</h4>
+                <p>当前苦度 ${value}，${parseInt(value) < 25 ? '苦味较轻，适合初学者' : parseInt(value) < 45 ? '苦味适中，平衡感好' : '苦味明显，适合喜欢重口味的饮家'}</p>
+              </div>
+            `
+          };
+
+          return type === 'abv' ? abvInfo : ibuInfo;
+        }
+
+        getKeywordDetailInfo(keyword) {
+          const keywordInfo = {
+            '柑橘': {
+              title: '柑橘风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🍊 风味特点</h4>
+                  <p>柑橘风味是IPA等啤酒的典型特征，带来清新、明亮的果香。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花来源</h4>
+                  <p>主要来自美式酒花，如 Cascade、Centennial、Citra 等。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>美式IPA、Session IPA、小麦啤</p>
+                </div>
+              `
+            },
+            '松木': {
+              title: '松木风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🌲 风味特点</h4>
+                  <p>松木风味带来森林般的清新气息，带有树脂和松脂的香气。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花来源</h4>
+                  <p>主要来自传统的英式酒花，如 Fuggles、East Kent Goldings。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>英式IPA、英式苦啤、波特</p>
+                </div>
+              `
+            },
+            '焦糖': {
+              title: '焦糖风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🍬 风味特点</h4>
+                  <p>焦糖风味带来甜美、温暖的口感，类似烤糖的香气。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自焦糖麦芽和水晶麦芽的烘焙过程。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>苏格兰艾尔、琥珀艾尔、棕色艾尔</p>
+                </div>
+              `
+            },
+            '巧克力': {
+              title: '巧克力风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🍫 风味特点</h4>
+                  <p>巧克力风味带来浓郁、醇厚的口感，类似黑巧克力的香气。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自高度烘焙的巧克力麦芽和黑麦芽。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>世涛、波特、黑啤</p>
+                </div>
+              `
+            },
+            '咖啡': {
+              title: '咖啡风味',
+              content: `
+                <div class="detail-section">
+                  <h4>☕ 风味特点</h4>
+                  <p>咖啡风味带来苦甜交织的复杂口感，类似浓缩咖啡的香气。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自极深烘焙的麦芽，有时会添加咖啡豆。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>咖啡世涛、波特、黑IPA</p>
+                </div>
+              `
+            },
+            '热带水果': {
+              title: '热带水果风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🥭 风味特点</h4>
+                  <p>热带水果风味带来芒果、菠萝、百香果等浓郁果香。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花来源</h4>
+                  <p>来自现代美式酒花，如 Citra、Mosaic、Galaxy。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>新英格兰IPA、Session IPA、水果啤酒</p>
+                </div>
+              `
+            },
+            '花香': {
+              title: '花香',
+              content: `
+                <div class="detail-section">
+                  <h4>🌸 风味特点</h4>
+                  <p>花香带来优雅、细腻的香气，类似花朵的芬芳。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花来源</h4>
+                  <p>来自欧洲酒花，如 Saaz、Hallertau、Tettnanger。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>皮尔森、比利时小麦啤、拉格</p>
+                </div>
+              `
+            },
+            '麦芽': {
+              title: '麦芽风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🌾 风味特点</h4>
+                  <p>麦芽风味带来谷物、面包、饼干的温暖香气。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自基础麦芽的烘焙过程，是啤酒的基底风味。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>拉格、艾尔、苏格兰艾尔</p>
+                </div>
+              `
+            },
+            '果香': {
+              title: '果香',
+              content: `
+                <div class="detail-section">
+                  <h4>🍎 风味特点</h4>
+                  <p>果香带来清新、甜美的水果气息，增加啤酒的层次感。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花来源</h4>
+                  <p>来自各种酒花的天然果香成分。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>IPA、小麦啤、比利时艾尔</p>
+                </div>
+              `
+            },
+            '坚果': {
+              title: '坚果风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🥜 风味特点</h4>
+                  <p>坚果风味带来醇厚、温暖的口感，类似烤坚果的香气。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自中等烘焙的麦芽，如琥珀麦芽。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>棕色艾尔、波特、世涛</p>
+                </div>
+              `
+            },
+            '香草': {
+              title: '香草风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🍦 风味特点</h4>
+                  <p>香草风味带来甜美、温暖的香气，类似香草冰淇淋。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自橡木桶陈酿或添加香草豆荚。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>橡木桶陈酿啤酒、世涛、波特</p>
+                </div>
+              `
+            },
+            '烟熏': {
+              title: '烟熏风味',
+              content: `
+                <div class="detail-section">
+                  <h4>🔥 风味特点</h4>
+                  <p>烟熏风味带来独特的烟熏香气，类似烤肉或熏鱼的气味。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自烟熏麦芽，使用山毛榉木或橡木熏制。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>烟熏啤酒、波特、世涛</p>
+                </div>
+              `
+            },
+            '苦味': {
+              title: '苦味',
+              content: `
+                <div class="detail-section">
+                  <h4>😋 风味特点</h4>
+                  <p>苦味是啤酒的重要特征，来自酒花的苦味物质。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花来源</h4>
+                  <p>来自酒花中的α-酸，在煮沸过程中异构化产生苦味。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>IPA、英式苦啤、世涛</p>
+                </div>
+              `
+            },
+            '甜味': {
+              title: '甜味',
+              content: `
+                <div class="detail-section">
+                  <h4>🍬 风味特点</h4>
+                  <p>甜味来自麦芽中的糖分，平衡苦味，增加啤酒的醇厚度。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>来自麦芽中的麦芽糖、葡萄糖等糖分。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>小麦啤、比利时艾尔、大麦酒</p>
+                </div>
+              `
+            },
+            '酸味': {
+              title: '酸味',
+              content: `
+                <div class="detail-section">
+                  <h4>🍋 风味特点</h4>
+                  <p>酸味带来清新、刺激的口感，增加啤酒的复杂度。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🦠 发酵来源</h4>
+                  <p>来自野生酵母或细菌发酵，如乳酸菌、酒香酵母。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>柏林酸小麦、法兰德斯红艾尔、兰比克</p>
+                </div>
+              `
+            },
+            '清爽': {
+              title: '清爽',
+              content: `
+                <div class="detail-section">
+                  <h4>💧 口感特点</h4>
+                  <p>清爽的啤酒口感轻盈、干净，适合畅饮。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>使用大量辅料如玉米、大米，降低酒体厚度。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>拉格、皮尔森、小麦啤</p>
+                </div>
+              `
+            },
+            '醇厚': {
+              title: '醇厚',
+              content: `
+                <div class="detail-section">
+                  <h4>🍷 口感特点</h4>
+                  <p>醇厚的啤酒口感饱满、丰富，余味悠长。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>使用大量特种麦芽，提高酒体厚度。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>世涛、大麦酒、双倍IPA</p>
+                </div>
+              `
+            },
+            '轻盈': {
+              title: '轻盈',
+              content: `
+                <div class="detail-section">
+                  <h4>🌬️ 口感特点</h4>
+                  <p>轻盈的啤酒口感清淡、易饮，不会感到负担。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>使用浅色麦芽，控制发酵度，降低残留糖分。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见啤酒类型</h4>
+                  <p>Session IPA、拉格、小麦啤</p>
+                </div>
+              `
+            },
+            '小麦': {
+              title: '小麦啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🌾 风格特点</h4>
+                  <p>小麦啤酒使用大量小麦芽，带来柔和的口感和细腻的泡沫。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>小麦含量通常在30-50%，有时高达60%。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见类型</h4>
+                  <p>德式小麦啤、比利时小麦啤、柏林酸小麦</p>
+                </div>
+              `
+            },
+            '黑啤': {
+              title: '黑啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🖤 风格特点</h4>
+                  <p>黑啤酒使用深色麦芽，呈现深黑色，带有浓郁的风味。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽来源</h4>
+                  <p>使用黑麦芽、巧克力麦芽等深色麦芽。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见类型</h4>
+                  <p>世涛、波特、黑拉格</p>
+                </div>
+              `
+            },
+            '拉格': {
+              title: '拉格啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🍺 风格特点</h4>
+                  <p>拉格使用下层发酵，口感清爽、干净，适合大量生产。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🦠 发酵特点</h4>
+                  <p>使用拉格酵母，在低温（5-10°C）下发酵。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见类型</h4>
+                  <p>皮尔森、美式拉格、博克</p>
+                </div>
+              `
+            },
+            '艾尔': {
+              title: '艾尔啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🍺 风格特点</h4>
+                  <p>艾尔使用上层发酵，口感丰富、复杂，风味浓郁。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🦠 发酵特点</h4>
+                  <p>使用艾尔酵母，在常温（15-20°C）下发酵。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见类型</h4>
+                  <p>IPA、世涛、比利时艾尔、小麦啤</p>
+                </div>
+              `
+            },
+            'IPA': {
+              title: 'IPA啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🍺 风格特点</h4>
+                  <p>IPA（India Pale Ale）以酒花香气和苦味为特色，是精酿啤酒的代表性风格。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌿 酒花使用</h4>
+                  <p>大量使用酒花，带来浓郁的果香和明显的苦味。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见类型</h4>
+                  <p>美式IPA、英式IPA、双倍IPA、Session IPA</p>
+                </div>
+              `
+            },
+            '世涛': {
+              title: '世涛啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🍺 风格特点</h4>
+                  <p>世涛（Stout）是深色艾尔啤酒，口感醇厚，带有咖啡、巧克力等风味。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🌾 麦芽使用</h4>
+                  <p>使用大量深色麦芽，包括黑麦芽、巧克力麦芽等。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见类型</h4>
+                  <p>爱尔兰世涛、帝国世涛、燕麦世涛</p>
+                </div>
+              `
+            },
+            '精酿': {
+              title: '精酿啤酒',
+              content: `
+                <div class="detail-section">
+                  <h4>🍺 定义</h4>
+                  <p>精酿啤酒（Craft Beer）强调传统酿造工艺、创新风味和独立生产。</p>
+                </div>
+                <div class="detail-section">
+                  <h4>🎯 特点</h4>
+                  <ul>
+                    <li>产量小，注重品质而非数量</li>
+                    <li>使用传统或创新的原料和工艺</li>
+                    <li>风味丰富多样，不拘一格</li>
+                    <li>由独立酒厂生产</li>
+                  </ul>
+                </div>
+                <div class="detail-section">
+                  <h4>🍺 常见风格</h4>
+                  <p>IPA、世涛、小麦啤、酸啤酒、比利时艾尔等</p>
+                </div>
+              `
+            }
+          };
+
+          return keywordInfo[keyword] || {
+            title: keyword,
+            content: `
+              <div class="detail-section">
+                <h4>📝 说明</h4>
+                <p>${keyword} 是这款啤酒的重要风味特征之一。</p>
+              </div>
+            `
+          };
+        }
+      }
+
+      const app = new BeerKnowledgeApp();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>精酿&美食 - 定制专属精酿</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #fce0ba 0%, #fee7b7 50%, #fce0ba 100%);
+        color: #4a2b12;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(255, 248, 239, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(255, 248, 239, 0.2) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #4a2b12;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(74, 43, 18, 0.1);
+        position: relative;
+        letter-spacing: 2px;
+      }
+
+      .back-btn {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 18px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      .section {
+        background: #fff8ef;
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        padding: 35px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(74, 43, 18, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        margin-bottom: 30px;
+        color: #4a2b12;
+        border-bottom: 3px solid #4a2b12;
+        padding-bottom: 15px;
+        font-size: 1.8rem;
+        font-weight: 600;
+        position: relative;
+        letter-spacing: 1px;
+      }
+
+      h2::before {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #4a2b12;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4a2b12;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      input[type="text"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #d4b896;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        background: #fff8ef;
+        color: #4a2b12;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #4a2b12;
+        box-shadow: 0 0 0 3px rgba(74, 43, 18, 0.1);
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      button[type="submit"] {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 18px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      button[type="submit"]:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .response {
+        margin-top: 30px;
+        padding: 20px;
+        background: #fff8ef;
+        border-radius: 8px;
+        border-left: 4px solid #d4af37;
+        min-height: 100px;
+      }
+
+      .loading {
+        text-align: center;
+        color: #4a2b12;
+        font-size: 1.1rem;
+        padding: 20px;
+      }
+
+      .error {
+        color: #c0392b;
+        padding: 15px;
+        background: #fdeaea;
+        border-radius: 8px;
+        border-left: 4px solid #c0392b;
+      }
+
+      .pairing-list {
+        display: grid;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .pairing-item {
+        background: #fff8ef;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #d4b896;
+        transition: all 0.3s ease;
+      }
+
+      .pairing-item:hover {
+        box-shadow: 0 4px 12px rgba(74, 43, 18, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .pairing-item h4 {
+        color: #4a2b12;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      .pairing-item p {
+        color: #6b4423;
+        line-height: 1.6;
+        margin-bottom: 8px;
+      }
+
+      .pairing-item strong {
+        color: #4a2b12;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px 15px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        .section {
+          padding: 25px 20px;
+        }
+
+        button[type="submit"] {
+          padding: 12px 30px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="back-btn">← 返回主页</a>
+      
+      <h1>精酿 & 美食搭配</h1>
+      
+      <div class="section">
+        <form id="pairing-form">
+          <div class="form-group">
+            <label for="dish">菜品名称</label>
+            <input type="text" id="dish" name="dish" placeholder="例如：红烧肉、麻辣火锅、清蒸鱼" required>
+          </div>
+          <div class="form-group">
+            <label for="flavor">菜品风味</label>
+            <input type="text" id="flavor" name="flavor" placeholder="例如：咸鲜、麻辣、清淡、酸甜" required>
+          </div>
+          <div class="form-group">
+            <label for="taste">口味偏好</label>
+            <input type="text" id="taste" name="taste" placeholder="例如：喜欢清爽、喜欢浓郁、喜欢平衡" required>
+          </div>
+          <button type="submit">获取搭配推荐</button>
+        </form>
+        <div id="pairing-response" class="response"></div>
+      </div>
+    </div>
+
+    <script>
+      class BeerPairingApp {
+        constructor() {
+          this.API_BASE_URL = 'http://localhost:8001/api/v1/beer';
+          this.selectedScenario = this.getScenarioFromURL();
+          this.init();
+        }
+
+        getScenarioFromURL() {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get('scenario') || 'pairing';
+        }
+
+        init() {
+          this.bindFormEvents();
+          this.addFormValidation();
+        }
+
+        bindFormEvents() {
+          const form = document.getElementById('pairing-form');
+          form.addEventListener('submit', async (e) => {
+            await this.handleFormSubmit(e);
+          });
+        }
+
+        async handleFormSubmit(e) {
+          e.preventDefault();
+          
+          const form = e.target;
+          const responseDiv = document.getElementById('pairing-response');
+          const submitButton = form.querySelector('button[type="submit"]');
+          
+          if (!this.validateForm(form)) {
+            return;
+          }
+          
+          responseDiv.innerHTML = '';
+          this.showLoading(responseDiv);
+          
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = '处理中...';
+          }
+          
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData);
+          
+          const filteredData = {};
+          for (const [key, value] of Object.entries(data)) {
+            if (value !== '') {
+              filteredData[key] = value;
+            }
+          }
+          
+          if (this.selectedScenario) {
+            filteredData.scenario = this.selectedScenario;
+          }
+          
+          try {
+            let url = `${this.API_BASE_URL}/pairing`;
+            
+            console.log('发送请求到:', url);
+            console.log('请求数据:', filteredData);
+            
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(filteredData)
+            });
+            
+            console.log('响应状态:', response.status);
+            
+            if (!response.ok) {
+              throw new Error(`HTTP错误！状态：${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('响应数据:', result);
+            this.processPairingResponse(result, responseDiv);
+            
+          } catch (error) {
+            console.error('请求错误:', error);
+            this.showError(responseDiv, error.message);
+          } finally {
+            this.hideLoading(responseDiv);
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = '获取搭配推荐';
+            }
+          }
+        }
+
+        validateField(field) {
+          const value = field.value.trim();
+          const isValid = value !== '';
+          
+          if (!isValid && field.hasAttribute('required')) {
+            field.style.borderColor = '#c0392b';
+          } else {
+            field.style.borderColor = '#d4b896';
+          }
+          
+          return isValid;
+        }
+
+        validateForm(form) {
+          const requiredFields = form.querySelectorAll('[required]');
+          let isValid = true;
+          
+          requiredFields.forEach(field => {
+            if (!this.validateField(field)) {
+              isValid = false;
+            }
+          });
+          
+          return isValid;
+        }
+
+        addFormValidation() {
+          const inputs = document.querySelectorAll('input[required], textarea[required]');
+          
+          inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+              this.validateField(input);
+            });
+            
+            input.addEventListener('input', () => {
+              if (input.value.trim() !== '') {
+                input.style.borderColor = '#d4b896';
+              }
+            });
+          });
+        }
+
+        showLoading(element) {
+          element.innerHTML = '<div class="loading">正在为您推荐最佳搭配...</div>';
+        }
+
+        hideLoading(element) {
+          const loading = element.querySelector('.loading');
+          if (loading) {
+            loading.remove();
+          }
+        }
+
+        showError(element, message) {
+          element.innerHTML = `<div class="error">❌ ${message}</div>`;
+        }
+
+        processPairingResponse(result, element) {
+          if (result.pairings && Array.isArray(result.pairings)) {
+            let html = '<h3>为您推荐的精酿搭配：</h3>';
+            html += '<div class="pairing-list">';
+            
+            result.pairings.forEach((item, index) => {
+              html += `<div class="pairing-item">
+                <h4>搭配 ${index + 1}: ${item.beer_style || '精酿啤酒'}</h4>
+                ${item.beer_name ? `<p><strong>推荐啤酒：</strong>${item.beer_name}</p>` : ''}
+                ${item.reason ? `<p><strong>搭配理由：</strong>${item.reason}</p>` : ''}
+                ${item.tasting_notes ? `<p><strong>品鉴笔记：</strong>${item.tasting_notes}</p>` : ''}
+              </div>`;
+            });
+            
+            html += '</div>';
+            element.innerHTML = html;
+          } else {
+            element.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+          }
+        }
+      }
+
+      const app = new BeerPairingApp();
+    </script>
+  </body>
+</html>

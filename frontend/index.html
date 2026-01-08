@@ -4,138 +4,905 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>精酿啤酒推荐系统</title>
+    <title>定制专属精酿</title>
     <style>
-      /* 全局样式 */
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
 
-      /* 导入可爱字体 */
-      @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
 
       body {
-        font-family: 'Comic Neue', 'Microsoft YaHei', cursive, sans-serif;
+        font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 50%, #ffcc80 100%);
-        color: #5d4037;
+        background: linear-gradient(135deg, #fce0ba 0%, #fee7b7 50%, #fce0ba 100%);
+        color: #4a2b12;
         min-height: 100vh;
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(255, 248, 239, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(255, 248, 239, 0.2) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
       }
 
       .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1;
       }
 
-      /* 标题样式 */
       h1 {
         text-align: center;
-        margin-bottom: 30px;
-        color: #ff7043;
+        margin-bottom: 40px;
+        color: #4a2b12;
         font-size: 3rem;
         font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(255, 112, 67, 0.2);
-        animation: bounceIn 1s ease;
+        text-shadow: 2px 2px 4px rgba(74, 43, 18, 0.1);
         position: relative;
+        letter-spacing: 2px;
       }
 
       h1::before {
-        content: '🍻';
-        margin-right: 15px;
-        animation: float 2s ease-in-out infinite;
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle, #fff8ef 0%, #fce0ba 100%);
+        border-radius: 50%;
+        opacity: 0.6;
+        z-index: -1;
       }
 
       h1::after {
-        content: '🍻';
-        margin-left: 15px;
-        animation: float 2s ease-in-out infinite 0.5s;
+        content: '🍺';
+        display: block;
+        font-size: 2.5rem;
+        margin-top: 15px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .nav-buttons {
+        display: none;
+      }
+
+      .nav-btn {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 6px 20px rgba(75, 35, 14, 0.4),
+          0 3px 6px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 1px;
+        min-width: 180px;
+      }
+
+      .nav-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+        border-radius: 12px 12px 0 0;
+        pointer-events: none;
+      }
+
+      .nav-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 4px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        filter: blur(2px);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+          0 10px 30px rgba(75, 35, 14, 0.5),
+          0 5px 10px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      .nav-btn:hover::after {
+        width: 90%;
+        height: 6px;
+        opacity: 0.5;
+      }
+
+      .nav-btn:active {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 4px 15px rgba(75, 35, 14, 0.4),
+          0 2px 5px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-btn.active {
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+        box-shadow: 
+          0 4px 15px rgba(75, 35, 14, 0.4),
+          inset 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .scenario-selection {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+        padding: 30px;
+        background: rgba(255, 248, 239, 0.6);
+        border-radius: 15px;
+        border: 2px solid rgba(212, 184, 150, 0.3);
+      }
+
+      .scenario-card {
+        background: linear-gradient(145deg, #fff8ef 0%, #f5e6d3 100%);
+        border: 2px solid #d4af37;
+        border-radius: 12px;
+        padding: 30px 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+          0 4px 12px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .scenario-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #d4af37 0%, #f5d76e 50%, #d4af37 100%);
+        transition: height 0.3s ease;
+      }
+
+      .scenario-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+          0 8px 25px rgba(74, 43, 18, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        border-color: #b8962e;
+      }
+
+      .scenario-card:hover::before {
+        height: 6px;
+      }
+
+      .scenario-card:active {
+        transform: translateY(-2px);
+      }
+
+      .scenario-card.selected {
+        background: linear-gradient(145deg, #f5e6d3 0%, #e8d4c0 100%);
+        border-color: #8b7355;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.2),
+          inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .scenario-card.selected::before {
+        height: 6px;
+        background: linear-gradient(90deg, #8b7355 0%, #a0826d 50%, #8b7355 100%);
+      }
+
+      .scenario-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        display: block;
+        text-align: center;
+      }
+
+      .scenario-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #4a2b12;
+        margin-bottom: 12px;
+        text-align: center;
+        line-height: 1.4;
+      }
+
+      .scenario-description {
+        font-size: 0.95rem;
+        color: #6b4423;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .scenario-indicator {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #d4af37;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: #d4af37;
+        font-weight: bold;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .scenario-card.selected .scenario-indicator {
+        opacity: 1;
+        background: #d4af37;
+        color: #fff8ef;
+      }
+
+      @media (max-width: 768px) {
+        .scenario-selection {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          padding: 20px;
+        }
+
+        .scenario-card {
+          padding: 25px 20px;
+        }
+
+        .scenario-title {
+          font-size: 1.2rem;
+        }
+
+        .scenario-description {
+          font-size: 0.9rem;
+        }
       }
 
       h2 {
-        margin-bottom: 25px;
-        color: #ff9800;
-        border-bottom: 3px solid #ff9800;
-        padding-bottom: 10px;
+        margin-bottom: 30px;
+        color: #4a2b12;
+        border-bottom: 3px solid #4a2b12;
+        padding-bottom: 15px;
         font-size: 1.8rem;
         font-weight: 600;
         position: relative;
+        letter-spacing: 1px;
       }
 
-      h2::after {
-        content: '🍺';
-        margin-left: 10px;
+      h2::before {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #4a2b12;
       }
 
-      /* 浮动动画 */
       @keyframes float {
-        0% { transform: translateY(0px); }
+        0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
       }
 
-      /* 功能区域样式 */
       .section {
-        background-color: white;
-        border-radius: 25px;
-        box-shadow: 0 8px 25px rgba(255, 152, 0, 0.15);
-        padding: 30px;
-        margin-bottom: 35px;
-        transition: all 0.3s ease;
+        background: #fff8ef;
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        padding: 35px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(74, 43, 18, 0.1);
+      }
+
+      .section.hidden {
+        display: none;
+      }
+
+      .welcome-section {
+        text-align: center;
+        padding: 60px 40px;
+        background: #f4f1e7;
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        margin-top: 40px;
+        border: 3px solid #d4af37;
         position: relative;
         overflow: hidden;
       }
 
+      .welcome-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, transparent 70%),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(212, 175, 55, 0.025) 2px,
+            rgba(212, 175, 55, 0.025) 4px
+          );
+        pointer-events: none;
+      }
+
+      .welcome-section::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: 
+          linear-gradient(0deg, transparent 49%, rgba(212, 175, 55, 0.08) 50%, transparent 51%),
+          linear-gradient(90deg, transparent 49%, rgba(212, 175, 55, 0.08) 50%, transparent 51%),
+          linear-gradient(45deg, transparent 49%, rgba(212, 175, 55, 0.06) 50%, transparent 51%),
+          linear-gradient(-45deg, transparent 49%, rgba(212, 175, 55, 0.06) 50%, transparent 51%);
+        pointer-events: none;
+      }
+
+      .welcome-section .corner-decoration {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border: 3px solid #d4af37;
+        opacity: 0.7;
+      }
+
+      .welcome-section .corner-decoration.top-left {
+        top: 12px;
+        left: 12px;
+        border-right: none;
+        border-bottom: none;
+        border-radius: 12px 0 0 0;
+      }
+
+      .welcome-section .corner-decoration.top-left::before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4af37;
+        border-right: none;
+        border-bottom: none;
+        border-radius: 5px 0 0 0;
+      }
+
+      .welcome-section .corner-decoration.top-right {
+        top: 12px;
+        right: 12px;
+        border-left: none;
+        border-bottom: none;
+        border-radius: 0 12px 0 0;
+      }
+
+      .welcome-section .corner-decoration.top-right::before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4af37;
+        border-left: none;
+        border-bottom: none;
+        border-radius: 0 5px 0 0;
+      }
+
+      .welcome-section .corner-decoration.bottom-left {
+        bottom: 12px;
+        left: 12px;
+        border-right: none;
+        border-top: none;
+        border-radius: 0 0 0 12px;
+      }
+
+      .welcome-section .corner-decoration.bottom-left::before {
+        content: '';
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4af37;
+        border-right: none;
+        border-top: none;
+        border-radius: 0 0 0 5px;
+      }
+
+      .welcome-section .corner-decoration.bottom-right {
+        bottom: 12px;
+        right: 12px;
+        border-left: none;
+        border-top: none;
+        border-radius: 0 0 12px 0;
+      }
+
+      .welcome-section .corner-decoration.bottom-right::before {
+        content: '';
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #d4af37;
+        border-left: none;
+        border-top: none;
+        border-radius: 0 0 5px 0;
+      }
+
+      .welcome-section h3 {
+        color: #4a2c1a;
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        font-family: 'Noto Serif SC', 'SimSun', serif;
+        text-shadow: 
+          2px 2px 4px rgba(74, 44, 26, 0.15),
+          0 0 20px rgba(212, 175, 55, 0.3);
+        position: relative;
+        z-index: 1;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #fff9f0 0%, #f8f3e8 100%);
+        border-radius: 12px;
+        border: 2px solid #d4af37;
+        box-shadow: 
+          0 4px 15px rgba(212, 175, 55, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .welcome-section h3::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 9px;
+        pointer-events: none;
+      }
+
+      .welcome-section .subtitle {
+        color: #5a3a2a;
+        font-size: 1.4rem;
+        margin-bottom: 35px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        font-family: 'Noto Serif SC', 'SimSun', serif;
+        position: relative;
+        z-index: 1;
+        padding: 10px 25px;
+        background: rgba(212, 175, 55, 0.08);
+        border-radius: 20px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        display: inline-block;
+      }
+
+      .welcome-section .beer-visuals {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 80px;
+        margin: 40px 0;
+        position: relative;
+        z-index: 1;
+        padding: 30px;
+        background: radial-gradient(circle at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+        border-radius: 20px;
+      }
+
+      .welcome-section .beer-visuals::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: 
+          repeating-conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            transparent 10deg,
+            rgba(212, 175, 55, 0.03) 10deg,
+            rgba(212, 175, 55, 0.03) 11deg
+          );
+        border-radius: 20px;
+        pointer-events: none;
+      }
+
+      .beer-visuals .beer-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        padding: 20px;
+        background: linear-gradient(135deg, #fff9f0 0%, #f8f3e8 100%);
+        border-radius: 15px;
+        border: 2px solid #d4af37;
+        box-shadow: 
+          0 4px 15px rgba(212, 175, 55, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .beer-visuals .beer-container::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 12px;
+        pointer-events: none;
+      }
+
+      .beer-visuals .beer-container::after {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle, #d4af37 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0.3;
+        filter: blur(10px);
+      }
+
+      .beer-visuals .beer-cup {
+        width: 120px;
+        height: 180px;
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 
+          0 8px 20px rgba(0, 0, 0, 0.15),
+          inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4rem;
+        border: 3px solid #d4af37;
+      }
+
+      .beer-visuals .beer-cup.light-beer {
+        background: linear-gradient(135deg, #fff9f0 0%, #f5e6d3 30%, #e8d4c0 100%);
+      }
+
+      .beer-visuals .beer-cup.light-beer::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        height: 30px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+        border-radius: 5px;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      }
+
+      .beer-visuals .beer-cup.light-beer::after {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        height: 20px;
+        background: linear-gradient(0deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+        border-radius: 3px;
+      }
+
+      .beer-visuals .beer-cup.dark-beer {
+        background: linear-gradient(135deg, #4a2c1a 0%, #3d2314 40%, #2a1810 100%);
+      }
+
+      .beer-visuals .beer-cup.dark-beer::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        height: 30px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border-radius: 5px;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+      }
+
+      .beer-visuals .beer-cup.dark-beer::after {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        height: 20px;
+        background: linear-gradient(0deg, rgba(212, 175, 55, 0.2) 0%, transparent 100%);
+        border-radius: 3px;
+      }
+
+      .beer-visuals .ingredients {
+        display: flex;
+        gap: 25px;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: rgba(212, 175, 55, 0.05);
+        border-radius: 20px;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+      }
+
+      .beer-visuals .ingredient {
+        font-size: 2.8rem;
+        position: relative;
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+        transition: transform 0.3s ease;
+        cursor: default;
+      }
+
+      .beer-visuals .ingredient:hover {
+        transform: scale(1.15) rotate(5deg);
+      }
+
+      .beer-visuals .ingredient::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border: 2px dashed rgba(212, 175, 55, 0.3);
+        border-radius: 50%;
+        animation: rotate 20s linear infinite;
+      }
+
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      .beer-visuals .ingredient::after {
+        content: attr(data-label);
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.85rem;
+        color: #784746;
+        white-space: nowrap;
+        font-weight: 600;
+        letter-spacing: 1px;
+        background: linear-gradient(135deg, #fff9f0 0%, #f8f3e8 100%);
+        padding: 4px 12px;
+        border-radius: 12px;
+        border: 1px solid #d4af37;
+        box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+      }
+
+      .beer-visuals .beer-illustration {
+        width: 180px;
+        height: 252px;
+        filter: drop-shadow(0 4px 8px rgba(74, 43, 18, 0.15));
+        transition: all 0.3s ease;
+      }
+
+      .beer-visuals .beer-illustration:hover {
+        filter: drop-shadow(0 6px 12px rgba(74, 43, 18, 0.25));
+        transform: translateY(-2px);
+      }
+
+      .beer-visuals .beer-illustration .cup-glass {
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+
+      .beer-visuals .beer-illustration .foam {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
+      }
+
+      .beer-visuals .beer-illustration .malt-stalk {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+      }
+
+      .beer-visuals .beer-illustration .hop-cones {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+      }
+
+      .beer-visuals .light-beer-illustration {
+        filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.15));
+      }
+
+      .beer-visuals .dark-beer-illustration {
+        filter: drop-shadow(0 4px 8px rgba(74, 43, 18, 0.2));
+      }
+
+      .welcome-section .slogan-box {
+        margin-top: 50px;
+        padding: 25px 40px;
+        border: 3px solid #d4af37;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fff9f0 0%, #f8f3e8 100%);
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        box-shadow: 
+          0 6px 20px rgba(212, 175, 55, 0.25),
+          inset 0 2px 4px rgba(255, 255, 255, 0.8);
+      }
+
+      .welcome-section .slogan-box::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        border: 1px solid rgba(212, 175, 55, 0.4);
+        border-radius: 9px;
+        pointer-events: none;
+      }
+
+      .welcome-section .slogan-box::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        border-radius: 12px;
+      }
+
+      .welcome-section .slogan {
+        color: #4a2c1a;
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        letter-spacing: 2px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        text-shadow: 1px 1px 2px rgba(74, 44, 26, 0.1);
+      }
+
+      .welcome-section p {
+        color: #4a2b12;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        font-weight: 500;
+      }
+
+      .welcome-section .emoji {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      .welcome-section.hidden {
+        display: none;
+      }
+
+      .back-to-home {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-to-home:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 16px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      .back-to-home:active {
+        transform: translateY(0);
+      }
+
+      .section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(74, 43, 18, 0.02) 2px,
+            rgba(74, 43, 18, 0.02) 4px
+          );
+        pointer-events: none;
+      }
+
+      .section::after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        border: 2px solid rgba(74, 43, 18, 0.1);
+        border-radius: 50%;
+        opacity: 0.5;
+      }
+
       .section:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 35px rgba(255, 152, 0, 0.25);
+        transform: translateY(-3px);
+        box-shadow: 
+          0 6px 20px rgba(74, 43, 18, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
       }
 
-      /* 功能区块装饰图标 */
-      .section:nth-child(2)::before { /* 啤酒推荐 */
-        content: '🍺';
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 3rem;
-        opacity: 0.1;
-        z-index: 0;
-      }
-
-      .section:nth-child(3)::before { /* 啤酒知识问答 */
-        content: '📚';
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 3rem;
-        opacity: 0.1;
-        z-index: 0;
-      }
-
-      .section:nth-child(4)::before { /* 啤酒与美食搭配 */
-        content: '🍽️';
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 3rem;
-        opacity: 0.1;
-        z-index: 0;
-      }
-
-      .section:nth-child(5)::before { /* 啤酒风格指南 */
-        content: '🎯';
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 3rem;
-        opacity: 0.1;
-        z-index: 0;
-      }
-
-      /* 表单样式 */
       .form-group {
         margin-bottom: 25px;
         position: relative;
@@ -146,43 +913,35 @@
         display: block;
         margin-bottom: 10px;
         font-weight: 600;
-        color: #f57c00;
+        color: #4a2b12;
         font-size: 1.1rem;
-        display: flex;
-        align-items: center;
-      }
-
-      label::before {
-        content: '🎀';
-        margin-right: 10px;
-        font-size: 1.2rem;
-        animation: swing 2s ease-in-out infinite;
-      }
-
-      /* 摆动动画 */
-      @keyframes swing {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(5deg); }
-        75% { transform: rotate(-5deg); }
-        100% { transform: rotate(0deg); }
+        letter-spacing: 0.5px;
       }
 
       input, select, textarea {
         width: 100%;
         padding: 15px 20px;
-        border: 2px solid #ffe0b2;
-        border-radius: 20px;
+        border: 2px solid #d4b896;
+        border-radius: 8px;
         font-size: 16px;
         font-family: inherit;
         transition: all 0.3s ease;
-        background-color: #fffaf0;
+        background: #fff8ef;
+        color: #4a2b12;
+        box-shadow: inset 0 1px 3px rgba(74, 43, 18, 0.05);
       }
 
       input:focus, select:focus, textarea:focus {
         outline: none;
-        border-color: #ffab40;
-        box-shadow: 0 0 0 4px rgba(255, 171, 64, 0.2);
-        transform: scale(1.02);
+        border-color: #4a2b12;
+        box-shadow: 
+          0 0 0 3px rgba(74, 43, 18, 0.1),
+          inset 0 1px 3px rgba(74, 43, 18, 0.05);
+        background: #fff;
+      }
+
+      input::placeholder, textarea::placeholder {
+        color: #a67c52;
       }
 
       textarea {
@@ -190,205 +949,178 @@
         min-height: 120px;
       }
 
-      /* 按钮样式 */
       button {
-        background: linear-gradient(135deg, #ffab40 0%, #ff7043 100%);
-        color: white;
-        border: none;
-        padding: 15px 30px;
-        border-radius: 30px;
+        background: #fff8ef;
+        color: #4a2b12;
+        border: 2px solid #4a2b12;
+        padding: 15px 40px;
+        border-radius: 8px;
         font-size: 18px;
         font-weight: 600;
         font-family: inherit;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(255, 112, 67, 0.3);
+        box-shadow: 
+          0 2px 8px rgba(74, 43, 18, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        position: relative;
+        overflow: hidden;
+      }
+
+      button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      button:hover::before {
+        left: 100%;
       }
 
       button:hover {
-        background: linear-gradient(135deg, #ff7043 0%, #ef6c00 100%);
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 6px 20px rgba(255, 112, 67, 0.4);
+        background: #fce0ba;
+        transform: translateY(-2px);
+        box-shadow: 
+          0 4px 12px rgba(74, 43, 18, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
       }
 
       button:active {
-        transform: translateY(0) scale(0.98);
+        transform: translateY(0);
       }
 
       button:disabled {
-        background: linear-gradient(135deg, #ffd54f 0%, #ffca28 100%);
+        opacity: 0.6;
         cursor: not-allowed;
         transform: none;
-        box-shadow: 0 2px 8px rgba(255, 202, 40, 0.3);
       }
 
-      /* 响应结果样式 */
       .response {
-        margin-top: 25px;
+        margin-top: 30px;
         padding: 25px;
-        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-        border-radius: 20px;
-        border-left: 6px solid #ff9800;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+        background: #fff8ef;
+        border-radius: 8px;
+        border-left: 4px solid #4a2b12;
+        box-shadow: 
+          0 2px 10px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
         position: relative;
         z-index: 1;
       }
 
-      .response:hover {
-        transform: scale(1.01);
-        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.2);
-      }
-
       .response h3 {
         margin-bottom: 15px;
-        color: #f57c00;
-        font-size: 1.5rem;
+        color: #4a2b12;
+        font-size: 1.4rem;
         font-weight: 600;
-        display: flex;
-        align-items: center;
-      }
-
-      .response h3::before {
-        content: '🎉';
-        margin-right: 10px;
-        animation: bounce 1s ease-in-out infinite;
-      }
-
-      /* 弹跳动画 */
-      @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
-          transform: translateY(0);
-        }
-        40% {
-          transform: translateY(-10px);
-        }
-        60% {
-          transform: translateY(-5px);
-        }
+        letter-spacing: 0.5px;
       }
 
       .response pre {
         white-space: pre-wrap;
         word-break: break-word;
-        background-color: #fce4ec;
+        background: #fff;
         padding: 20px;
-        border-radius: 15px;
+        border-radius: 8px;
         font-family: inherit;
-        border: 2px dashed #ffcdd2;
+        border: 1px solid #d4b896;
+        color: #4a2b12;
+        line-height: 1.8;
       }
 
-      /* 错误提示样式 */
       .error {
-        color: #e57373;
+        color: #c0392b;
         font-size: 14px;
         margin-top: 8px;
         font-weight: 500;
       }
 
-      /* 推荐列表样式 */
       .recommendation-list {
         margin-top: 20px;
       }
 
       .recommendation-item {
-        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        background: #fff8ef;
         padding: 20px;
-        border-radius: 20px;
+        border-radius: 8px;
         margin-bottom: 15px;
-        border-left: 6px solid #ff9800;
+        border-left: 4px solid #4a2b12;
+        box-shadow: 
+          0 2px 8px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
         transition: all 0.3s ease;
-        position: relative;
-        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
       }
 
       .recommendation-item:hover {
-        transform: translateX(10px) scale(1.02);
-        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.2);
+        transform: translateX(5px);
+        box-shadow: 
+          0 4px 12px rgba(74, 43, 18, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
       }
 
       .recommendation-item h4 {
-        color: #f57c00;
+        color: #4a2b12;
         margin-bottom: 12px;
         font-size: 1.3rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-      }
-
-      .recommendation-item h4::before {
-        content: '✨ ';
-        margin-right: 8px;
-        animation: sparkle 1.5s ease-in-out infinite;
+        font-weight: 600;
+        letter-spacing: 0.5px;
       }
 
       .recommendation-item p {
         margin-bottom: 8px;
-        color: #ef6c00;
+        color: #4a2b12;
         font-weight: 500;
-        display: flex;
-        align-items: center;
+        line-height: 1.6;
       }
 
-      .recommendation-item p::before {
-        content: '🍻';
-        margin-right: 8px;
-        font-size: 1.2rem;
-        opacity: 0.7;
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #4a2b12;
+        font-size: 1.1rem;
       }
 
-      /* 闪烁动画 */
-      @keyframes sparkle {
-        0% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(1.2); }
-        100% { opacity: 1; transform: scale(1); }
+      .loading::before {
+        content: '⏳';
+        display: block;
+        font-size: 3rem;
+        margin-bottom: 15px;
+        animation: pulse 1.5s ease-in-out infinite;
       }
 
-      /* 装饰性元素 */
-      .section::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: 30px;
-        width: 40px;
-        height: 40px;
-        background: radial-gradient(circle, #fff9c4 0%, #ffeb3b 100%);
-        border-radius: 50%;
-        opacity: 0.7;
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.1); }
       }
 
-      /* 动画效果 */
-      @keyframes bounceIn {
-        0% {
-          opacity: 0;
-          transform: scale(0.3);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1.05);
-        }
-        70% {
-          transform: scale(0.9);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      /* 响应式设计 */
       @media (max-width: 768px) {
         .container {
-          padding: 15px;
+          padding: 30px 15px;
         }
 
         h1 {
           font-size: 2.2rem;
         }
 
-        h1::before,
-        h1::after {
-          font-size: 2rem;
-          margin: 0 8px;
+        .nav-buttons {
+          gap: 15px;
+          margin: 40px 0;
+        }
+
+        .nav-btn {
+          padding: 14px 30px;
+          font-size: 1rem;
+          min-width: 140px;
         }
 
         h2 {
@@ -396,14 +1128,8 @@
         }
 
         .section {
-          padding: 20px;
-          margin-bottom: 25px;
-        }
-
-        .section:nth-child(n)::before {
-          font-size: 2.5rem;
-          top: 5px;
-          right: 10px;
+          padding: 25px;
+          margin-bottom: 30px;
         }
 
         input, select, textarea {
@@ -412,7 +1138,7 @@
         }
 
         button {
-          padding: 12px 24px;
+          padding: 12px 30px;
           font-size: 16px;
           width: 100%;
         }
@@ -424,6 +1150,69 @@
         .recommendation-item {
           padding: 18px;
         }
+
+        .welcome-section {
+          padding: 40px 20px;
+        }
+
+        .welcome-section h3 {
+          font-size: 2rem;
+          padding: 12px 20px;
+        }
+
+        .welcome-section .subtitle {
+          font-size: 1.2rem;
+          padding: 8px 18px;
+        }
+
+        .welcome-section .beer-visuals {
+          gap: 40px;
+          padding: 20px;
+        }
+
+        .beer-visuals .beer-container {
+          padding: 15px;
+        }
+
+        .beer-visuals .beer-illustration {
+          width: 140px;
+          height: 196px;
+        }
+
+        .welcome-section .beer-cup {
+          width: 100px;
+          height: 150px;
+          font-size: 3rem;
+        }
+
+        .welcome-section .ingredient {
+          font-size: 2.2rem;
+        }
+
+        .welcome-section .slogan-box {
+          padding: 20px 30px;
+          margin-top: 40px;
+        }
+
+        .welcome-section .slogan {
+          font-size: 1.4rem;
+          font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .welcome-section .corner-decoration {
+          width: 55px;
+          height: 55px;
+        }
+
+        .welcome-section .corner-decoration.top-left,
+        .welcome-section .corner-decoration.top-right,
+        .welcome-section .corner-decoration.bottom-left,
+        .welcome-section .corner-decoration.bottom-right {
+          top: 8px;
+          right: 8px;
+          bottom: 8px;
+          left: 8px;
+        }
       }
 
       @media (max-width: 480px) {
@@ -431,22 +1220,12 @@
           font-size: 1.8rem;
         }
 
-        h1::before,
-        h1::after {
-          font-size: 1.5rem;
-          margin: 0 5px;
-        }
-
         h2 {
           font-size: 1.3rem;
         }
 
         .section {
-          padding: 15px;
-        }
-
-        .section:nth-child(n)::before {
-          font-size: 2rem;
+          padding: 20px;
         }
 
         .form-group {
@@ -463,7 +1242,7 @@
         }
 
         button {
-          padding: 10px 20px;
+          padding: 10px 25px;
           font-size: 15px;
         }
 
@@ -472,7 +1251,7 @@
         }
 
         .response h3 {
-          font-size: 1.3rem;
+          font-size: 1.2rem;
         }
 
         .recommendation-item {
@@ -480,622 +1259,423 @@
         }
 
         .recommendation-item h4 {
-          font-size: 1.2rem;
-        }
-      }
-
-      @media (max-width: 360px) {
-        h1 {
-          font-size: 1.5rem;
+          font-size: 1.1rem;
         }
 
-        h2 {
-          font-size: 1.2rem;
+        .welcome-section {
+          padding: 30px 15px;
         }
 
-        .section {
+        .welcome-section h3 {
+          font-size: 1.6rem;
+          padding: 10px 15px;
+          letter-spacing: 2px;
+        }
+
+        .welcome-section .subtitle {
+          font-size: 1rem;
+          padding: 6px 14px;
+          letter-spacing: 1px;
+        }
+
+        .welcome-section .beer-visuals {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .beer-visuals .beer-container {
           padding: 12px;
         }
 
-        input, select, textarea {
-          padding: 9px 12px;
+        .beer-visuals .beer-illustration {
+          width: 120px;
+          height: 168px;
         }
 
-        button {
-          padding: 9px 18px;
-          font-size: 14px;
+        .welcome-section .beer-cup {
+          width: 90px;
+          height: 130px;
+          font-size: 2.5rem;
+        }
+
+        .welcome-section .ingredient {
+          font-size: 1.8rem;
+        }
+
+        .welcome-section .slogan-box {
+          padding: 15px 20px;
+          margin-top: 35px;
+        }
+
+        .welcome-section .slogan {
+          font-size: 1.2rem;
+          letter-spacing: 1px;
+          font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .welcome-section .corner-decoration {
+          width: 45px;
+          height: 45px;
+        }
+
+        .welcome-section .corner-decoration.top-left,
+        .welcome-section .corner-decoration.top-right,
+        .welcome-section .corner-decoration.bottom-left,
+        .welcome-section .corner-decoration.bottom-right {
+          top: 6px;
+          right: 6px;
+          bottom: 6px;
+          left: 6px;
+        }
+
+        .welcome-section .corner-decoration.top-left::before,
+        .welcome-section .corner-decoration.top-right::before,
+        .welcome-section .corner-decoration.bottom-left::before,
+        .welcome-section .corner-decoration.bottom-right::before {
+          width: 15px;
+          height: 15px;
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>精酿啤酒推荐系统</h1>
+      <h1>定制专属精酿</h1>
 
-      <!-- 啤酒推荐功能 -->
-      <div class="section">
-        <h2>啤酒推荐</h2>
-        <form id="recommend-form">
-          <div class="form-group">
-            <label for="mood">心情状态</label>
-            <input type="text" id="mood" name="mood" placeholder="例如：放松、兴奋、疲惫" required>
-          </div>
-          <div class="form-group">
-            <label for="taste">口味偏好</label>
-            <input type="text" id="taste" name="taste" placeholder="例如：甜、苦、酸、平衡" required>
-          </div>
-          <div class="form-group">
-            <label for="hop">酒花偏好</label>
-            <input type="text" id="hop" name="hop" placeholder="例如：柑橘味、热带水果味、松针味" required>
-          </div>
-          <div class="form-group">
-            <label for="style">精酿风格偏好</label>
-            <input type="text" id="style" name="style" placeholder="例如：IPA、世涛、酸艾尔、拉格" required>
-          </div>
-          <div class="form-group">
-            <label for="provider">模型提供商（可选）</label>
-            <select id="provider" name="provider">
-              <option value="">默认</option>
-              <option value="openai">OpenAI</option>
-            </select>
-          </div>
-          <button type="submit">获取推荐</button>
-        </form>
-        <div id="recommend-response" class="response"></div>
+      <div class="scenario-selection">
+        <div class="scenario-card" data-scenario="relax" data-target="recommend-section">
+          <span class="scenario-indicator">✓</span>
+          <span class="scenario-icon">🍺</span>
+          <h3 class="scenario-title">今晚想微醺放松，但不想踩雷</h3>
+          <p class="scenario-description">根据您的口味偏好，为您推荐最适合的精酿啤酒</p>
+        </div>
+        
+        <div class="scenario-card" data-scenario="explore" data-target="knowledge-section">
+          <span class="scenario-indicator">✓</span>
+          <span class="scenario-icon">📚</span>
+          <h3 class="scenario-title">想了解精酿知识，探索新的啤酒风格</h3>
+          <p class="scenario-description">深入了解精酿啤酒的文化、历史和不同风格特点</p>
+        </div>
+        
+        <div class="scenario-card" data-scenario="pairing" data-target="pairing-section">
+          <span class="scenario-indicator">✓</span>
+          <span class="scenario-icon">🍽️</span>
+          <h3 class="scenario-title">已经点了菜，想搭配最合适的精酿</h3>
+          <p class="scenario-description">根据您的菜品，推荐最佳的精酿啤酒搭配方案</p>
+        </div>
       </div>
 
-      <!-- 啤酒知识问答功能 -->
-      <div class="section">
-        <h2>啤酒知识问答</h2>
-        <form id="knowledge-form">
-          <div class="form-group">
-            <label for="question">您的问题</label>
-            <textarea id="question" name="question" placeholder="例如：什么是IPA啤酒？" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="knowledge-provider">模型提供商（可选）</label>
-            <select id="knowledge-provider" name="provider">
-              <option value="">默认</option>
-              <option value="openai">OpenAI</option>
-            </select>
-          </div>
-          <button type="submit">获取答案</button>
-        </form>
-        <div id="knowledge-response" class="response"></div>
+      <div class="nav-buttons">
+        <button class="nav-btn" data-target="recommend-section">精酿推荐</button>
+        <button class="nav-btn" data-target="knowledge-section">精酿知识</button>
+        <button class="nav-btn" data-target="pairing-section">精酿&美食</button>
       </div>
 
-      <!-- 啤酒与美食搭配功能 -->
-      <div class="section">
-        <h2>啤酒与美食搭配</h2>
-        <form id="pairing-form">
-          <div class="form-group">
-            <label for="pairing-mood">心情状态</label>
-            <input type="text" id="pairing-mood" name="mood" placeholder="例如：放松、聚会" required>
+      <div class="welcome-section" id="welcome-section">
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration top-right"></div>
+        <div class="corner-decoration bottom-left"></div>
+        <div class="corner-decoration bottom-right"></div>
+        
+        <h3>精酿啤酒风格</h3>
+        <p class="subtitle">开启您的精酿定制之旅</p>
+        
+        <div class="beer-visuals">
+          <div class="beer-container">
+            <svg class="beer-illustration light-beer-illustration" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="lightBeerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f5e6d3;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#e8d4c0;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#d4b896;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="foamGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#f5f5f0;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="maltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#b8962e;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="hopGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#7cb342;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#558b2f;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              
+              <g class="cup-glass">
+                <path d="M70 40 Q60 50 60 70 L60 180 Q60 200 80 210 L120 210 Q140 200 140 180 L140 70 Q140 50 130 40 Z" 
+                      fill="url(#lightBeerGradient)" 
+                      stroke="#8b7355" 
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M70 40 Q60 50 60 70 L60 180 Q60 200 80 210 L120 210 Q140 200 140 180 L140 70 Q140 50 130 40 Z" 
+                      fill="none" 
+                      stroke="#d4af37" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      opacity="0.6"/>
+                
+                <path d="M100 210 L100 240 Q100 250 90 255 L90 260 L110 260 L110 255 Q100 250 100 240 Z" 
+                      fill="url(#lightBeerGradient)" 
+                      stroke="#8b7355" 
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M100 210 L100 240 Q100 250 90 255 L90 260 L110 260 L110 255 Q100 250 100 240 Z" 
+                      fill="none" 
+                      stroke="#d4af37" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      opacity="0.6"/>
+              </g>
+              
+              <g class="foam">
+                <ellipse cx="85" cy="35" rx="18" ry="12" fill="url(#foamGradient)" stroke="#e0e0e0" stroke-width="1"/>
+                <ellipse cx="115" cy="32" rx="16" ry="10" fill="url(#foamGradient)" stroke="#e0e0e0" stroke-width="1"/>
+                <ellipse cx="100" cy="28" rx="20" ry="14" fill="url(#foamGradient)" stroke="#e0e0e0" stroke-width="1"/>
+                <ellipse cx="90" cy="42" rx="14" ry="9" fill="url(#foamGradient)" stroke="#e0e0e0" stroke-width="1"/>
+                <ellipse cx="110" cy="40" rx="15" ry="10" fill="url(#foamGradient)" stroke="#e0e0e0" stroke-width="1"/>
+                <ellipse cx="100" cy="38" rx="12" ry="8" fill="url(#foamGradient)" stroke="#e0e0e0" stroke-width="1"/>
+              </g>
+              
+              <g class="malt-stalk">
+                <path d="M25 180 Q30 160 35 140 Q40 120 45 100" 
+                      fill="none" 
+                      stroke="url(#maltGradient)" 
+                      stroke-width="2.5"
+                      stroke-linecap="round"/>
+                <ellipse cx="30" cy="130" rx="4" ry="8" fill="url(#maltGradient)" transform="rotate(-20 30 130)"/>
+                <ellipse cx="35" cy="115" rx="4" ry="8" fill="url(#maltGradient)" transform="rotate(10 35 115)"/>
+                <ellipse cx="40" cy="100" rx="4" ry="8" fill="url(#maltGradient)" transform="rotate(-5 40 100)"/>
+                <ellipse cx="32" cy="145" rx="4" ry="8" fill="url(#maltGradient)" transform="rotate(15 32 145)"/>
+                <ellipse cx="38" cy="125" rx="4" ry="8" fill="url(#maltGradient)" transform="rotate(-10 38 125)"/>
+              </g>
+              
+              <g class="hop-cones">
+                <path d="M160 140 Q155 130 165 125 Q175 130 170 140 Q165 150 160 140" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M165 125 Q160 115 170 110 Q180 115 175 125" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M170 110 Q165 100 175 95 Q185 100 180 110" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M155 145 Q150 135 160 130 Q170 135 165 145" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M165 155 Q160 145 170 140 Q180 145 175 155" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M170 170 Q165 160 175 155 Q185 160 180 170" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M155 160 Q150 150 160 145 Q170 150 165 160" 
+                      fill="url(#hopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </g>
+            </svg>
           </div>
-          <div class="form-group">
-            <label for="pairing-taste">口味偏好</label>
-            <input type="text" id="pairing-taste" name="taste" placeholder="例如：甜、咸、辣" required>
+          
+          <div class="beer-container">
+            <svg class="beer-illustration dark-beer-illustration" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="darkBeerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#4a2c1a;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#3d2314;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#2a1810;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="darkFoamGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#d4b896;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#c4a574;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="darkMaltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#b8962e;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="darkHopGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#7cb342;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#558b2f;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              
+              <g class="cup-glass">
+                <path d="M70 40 Q60 50 60 70 L60 180 Q60 200 80 210 L120 210 Q140 200 140 180 L140 70 Q140 50 130 40 Z" 
+                      fill="url(#darkBeerGradient)" 
+                      stroke="#2a1810" 
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M70 40 Q60 50 60 70 L60 180 Q60 200 80 210 L120 210 Q140 200 140 180 L140 70 Q140 50 130 40 Z" 
+                      fill="none" 
+                      stroke="#d4af37" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      opacity="0.5"/>
+                
+                <path d="M100 210 L100 240 Q100 250 90 255 L90 260 L110 260 L110 255 Q100 250 100 240 Z" 
+                      fill="url(#darkBeerGradient)" 
+                      stroke="#2a1810" 
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M100 210 L100 240 Q100 250 90 255 L90 260 L110 260 L110 255 Q100 250 100 240 Z" 
+                      fill="none" 
+                      stroke="#d4af37" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      opacity="0.5"/>
+              </g>
+              
+              <g class="foam">
+                <ellipse cx="85" cy="35" rx="18" ry="12" fill="url(#darkFoamGradient)" stroke="#b8962e" stroke-width="1"/>
+                <ellipse cx="115" cy="32" rx="16" ry="10" fill="url(#darkFoamGradient)" stroke="#b8962e" stroke-width="1"/>
+                <ellipse cx="100" cy="28" rx="20" ry="14" fill="url(#darkFoamGradient)" stroke="#b8962e" stroke-width="1"/>
+                <ellipse cx="90" cy="42" rx="14" ry="9" fill="url(#darkFoamGradient)" stroke="#b8962e" stroke-width="1"/>
+                <ellipse cx="110" cy="40" rx="15" ry="10" fill="url(#darkFoamGradient)" stroke="#b8962e" stroke-width="1"/>
+                <ellipse cx="100" cy="38" rx="12" ry="8" fill="url(#darkFoamGradient)" stroke="#b8962e" stroke-width="1"/>
+              </g>
+              
+              <g class="malt-stalk">
+                <path d="M25 180 Q30 160 35 140 Q40 120 45 100" 
+                      fill="none" 
+                      stroke="url(#darkMaltGradient)" 
+                      stroke-width="2.5"
+                      stroke-linecap="round"/>
+                <ellipse cx="30" cy="130" rx="4" ry="8" fill="url(#darkMaltGradient)" transform="rotate(-20 30 130)"/>
+                <ellipse cx="35" cy="115" rx="4" ry="8" fill="url(#darkMaltGradient)" transform="rotate(10 35 115)"/>
+                <ellipse cx="40" cy="100" rx="4" ry="8" fill="url(#darkMaltGradient)" transform="rotate(-5 40 100)"/>
+                <ellipse cx="32" cy="145" rx="4" ry="8" fill="url(#darkMaltGradient)" transform="rotate(15 32 145)"/>
+                <ellipse cx="38" cy="125" rx="4" ry="8" fill="url(#darkMaltGradient)" transform="rotate(-10 38 125)"/>
+              </g>
+              
+              <g class="hop-cones">
+                <path d="M160 140 Q155 130 165 125 Q175 130 170 140 Q165 150 160 140" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M165 125 Q160 115 170 110 Q180 115 175 125" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M170 110 Q165 100 175 95 Q185 100 180 110" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M155 145 Q150 135 160 130 Q170 135 165 145" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M165 155 Q160 145 170 140 Q180 145 175 155" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M170 170 Q165 160 175 155 Q185 160 180 170" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M155 160 Q150 150 160 145 Q170 150 165 160" 
+                      fill="url(#darkHopGradient)" 
+                      stroke="#33691e" 
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </g>
+            </svg>
           </div>
-          <div class="form-group">
-            <label for="dining-scenario">餐饮场景</label>
-            <input type="text" id="dining-scenario" name="dining_scenario" placeholder="例如：聚餐、独酌、约会" required>
-          </div>
-          <div class="form-group">
-            <label for="food-type">食物类型</label>
-            <input type="text" id="food-type" name="food_type" placeholder="例如：烧烤、海鲜、甜点" required>
-          </div>
-          <div class="form-group">
-            <label for="pairing-provider">模型提供商（可选）</label>
-            <select id="pairing-provider" name="provider">
-              <option value="">默认</option>
-              <option value="openai">OpenAI</option>
-            </select>
-          </div>
-          <button type="submit">获取搭配推荐</button>
-        </form>
-        <div id="pairing-response" class="response"></div>
-      </div>
-
-      <!-- 啤酒风格指南功能 -->
-      <div class="section">
-        <h2>啤酒风格指南</h2>
-        <form id="style-guide-form">
-          <div class="form-group">
-            <label for="beer-style">啤酒风格</label>
-            <input type="text" id="beer-style" name="beer_style" placeholder="例如：IPA、世涛、酸艾尔" required>
-          </div>
-          <div class="form-group">
-            <label for="style-guide-provider">模型提供商（可选）</label>
-            <select id="style-guide-provider" name="provider">
-              <option value="">默认</option>
-              <option value="openai">OpenAI</option>
-            </select>
-          </div>
-          <button type="submit">获取风格指南</button>
-        </form>
-        <div id="style-guide-response" class="response"></div>
+        </div>
+        
+        <div class="slogan-box">
+          <p class="slogan">告别"水啤"，喝懂这杯"液体面包"</p>
+        </div>
       </div>
     </div>
 
     <script>
-      // 精酿啤酒推荐系统前端重构
-      class BeerRecommendationApp {
+      class BeerCustomizationApp {
         constructor() {
-          // API基础URL
-          this.API_BASE_URL = 'http://localhost:8001/api/v1/beer';
-          
-          // 初始化应用
           this.init();
         }
 
-        // 初始化应用
         init() {
-          // 绑定所有表单事件
-          this.bindFormEvents();
-          
-          // 添加表单验证
-          this.addFormValidation();
-          
-          // 初始化加载状态
-          this.initLoadingStates();
-          
-          // 添加页面内切换功能
-          this.addPageNavigation();
+          this.bindScenarioCards();
         }
 
-        // 绑定表单事件
-        bindFormEvents() {
-          const forms = [
-            { id: 'recommend-form', endpoint: '/recommend', responseId: 'recommend-response', processor: this.processRecommendResponse.bind(this) },
-            { id: 'knowledge-form', endpoint: '/knowledge', responseId: 'knowledge-response', processor: this.processKnowledgeResponse.bind(this) },
-            { id: 'pairing-form', endpoint: '/pairing', responseId: 'pairing-response', processor: this.processPairingResponse.bind(this) },
-            { id: 'style-guide-form', endpoint: '/style-guide', responseId: 'style-guide-response', processor: this.processStyleGuideResponse.bind(this) }
-          ];
-
-          forms.forEach(formConfig => {
-            const form = document.getElementById(formConfig.id);
-            form.addEventListener('submit', async (e) => {
-              await this.handleFormSubmit(e, formConfig);
+        bindScenarioCards() {
+          const scenarioCards = document.querySelectorAll('.scenario-card');
+          
+          scenarioCards.forEach(card => {
+            card.addEventListener('click', () => {
+              const scenario = card.getAttribute('data-scenario');
+              const targetId = card.getAttribute('data-target');
+              
+              scenarioCards.forEach(c => c.classList.remove('selected'));
+              card.classList.add('selected');
+              
+              let targetPage = '';
+              switch(targetId) {
+                case 'recommend-section':
+                  targetPage = 'recommend.html';
+                  break;
+                case 'knowledge-section':
+                  targetPage = 'knowledge.html';
+                  break;
+                case 'pairing-section':
+                  targetPage = 'pairing.html';
+                  break;
+                default:
+                  targetPage = 'recommend.html';
+              }
+              
+              const url = `${targetPage}?scenario=${scenario}`;
+              window.location.href = url;
             });
-          });
-        }
-
-        // 通用表单提交处理函数
-        async handleFormSubmit(e, formConfig) {
-          e.preventDefault();
-          
-          const form = e.target;
-          const responseDiv = document.getElementById(formConfig.responseId);
-          
-          // 表单验证
-          if (!this.validateForm(form)) {
-            return;
-          }
-          
-          // 清空之前的响应
-          responseDiv.innerHTML = '';
-          
-          // 显示加载状态
-          this.showLoading(responseDiv);
-          
-          // 获取表单数据
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData);
-          
-          // 过滤掉空值
-          const filteredData = {};
-          for (const [key, value] of Object.entries(data)) {
-            if (value !== '') {
-              filteredData[key] = value;
-            }
-          }
-          
-          // 获取查询参数（模型提供商）
-          const provider = filteredData.provider;
-          delete filteredData.provider;
-          
-          try {
-            // 构建API URL
-            let url = `${this.API_BASE_URL}${formConfig.endpoint}`;
-            if (provider) {
-              url += `?provider=${provider}`;
-            }
-            
-            // 发送请求
-            const response = await fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(filteredData)
-            });
-            
-            if (!response.ok) {
-              throw new Error(`HTTP错误！状态：${response.status}`);
-            }
-            
-            // 解析响应数据
-            const result = await response.json();
-            
-            // 处理响应
-            formConfig.processor(result, responseDiv);
-            
-          } catch (error) {
-            this.showError(responseDiv, error.message);
-          } finally {
-            // 隐藏加载状态
-            this.hideLoading(responseDiv);
-          }
-        }
-
-        // 添加表单验证
-        addFormValidation() {
-          const requiredFields = document.querySelectorAll('[required]');
-          
-          requiredFields.forEach(field => {
-            // 添加输入验证
-            field.addEventListener('input', () => {
-              this.validateField(field);
-            });
-            
-            // 添加失焦验证
-            field.addEventListener('blur', () => {
-              this.validateField(field);
-            });
-          });
-        }
-
-        // 验证单个字段
-        validateField(field) {
-          const errorElement = field.parentElement.querySelector('.error');
-          
-          // 移除已有的错误提示
-          if (errorElement) {
-            errorElement.remove();
-          }
-          
-          // 验证必填字段
-          if (field.required && field.value.trim() === '') {
-            this.showFieldError(field, '此字段为必填项');
-            return false;
-          }
-          
-          // 移除输入内容长度限制，允许更灵活的用户输入
-          
-          return true;
-        }
-
-        // 验证整个表单
-        validateForm(form) {
-          const fields = form.querySelectorAll('input, textarea, select');
-          let isValid = true;
-          
-          fields.forEach(field => {
-            if (!this.validateField(field)) {
-              isValid = false;
-            }
-          });
-          
-          return isValid;
-        }
-
-        // 显示字段错误
-        showFieldError(field, message) {
-          let errorElement = field.parentElement.querySelector('.error');
-          
-          if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.className = 'error';
-            field.parentElement.appendChild(errorElement);
-          }
-          
-          errorElement.textContent = message;
-        }
-
-        // 初始化加载状态
-        initLoadingStates() {
-          // 创建加载动画样式
-          const style = document.createElement('style');
-          style.textContent = `
-            .loading {
-              display: inline-block;
-              width: 20px;
-              height: 20px;
-              border: 3px solid rgba(255, 171, 64, 0.3);
-              border-radius: 50%;
-              border-top-color: #ffab40;
-              animation: spin 1s ease-in-out infinite;
-            }
-            
-            @keyframes spin {
-              to { transform: rotate(360deg); }
-            }
-          `;
-          document.head.appendChild(style);
-        }
-
-        // 显示加载状态
-        showLoading(element) {
-          const loadingDiv = document.createElement('div');
-          loadingDiv.className = 'loading-container';
-          loadingDiv.innerHTML = `
-            <div style="display: flex; align-items: center; justify-content: center; padding: 20px;">
-              <div class="loading"></div>
-              <span style="margin-left: 10px; color: #f57c00;">正在获取结果...</span>
-            </div>
-          `;
-          element.appendChild(loadingDiv);
-        }
-
-        // 隐藏加载状态
-        hideLoading(element) {
-          const loadingDiv = element.querySelector('.loading-container');
-          if (loadingDiv) {
-            loadingDiv.remove();
-          }
-        }
-
-        // 显示错误信息
-        showError(element, message) {
-          element.innerHTML = `
-            <h3>错误</h3>
-            <p>请求失败：${message}</p>
-            <button onclick="app.resetForm('${element.id}')" style="margin-top: 10px;">重试</button>
-          `;
-        }
-
-        // 重置表单
-        resetForm(responseId) {
-          const responseDiv = document.getElementById(responseId);
-          const formId = responseId.replace('-response', '-form');
-          const form = document.getElementById(formId);
-          
-          // 清空响应
-          responseDiv.innerHTML = '';
-          
-          // 重置表单
-          if (form) {
-            form.reset();
-            
-            // 移除所有错误提示
-            const errorElements = form.querySelectorAll('.error');
-            errorElements.forEach(el => el.remove());
-          }
-        }
-
-        // 添加页面内导航功能
-        addPageNavigation() {
-          // 创建导航菜单
-          const navMenu = document.createElement('div');
-          navMenu.style.cssText = `
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-          `;
-          
-          const navItems = [
-            { id: 'recommend', name: '🍺 啤酒推荐', icon: '🍺' },
-            { id: 'knowledge', name: '📚 知识问答', icon: '📚' },
-            { id: 'pairing', name: '🍽️ 美食搭配', icon: '🍽️' },
-            { id: 'style-guide', name: '🎯 风格指南', icon: '🎯' }
-          ];
-
-          navItems.forEach(item => {
-            const navItem = document.createElement('button');
-            navItem.textContent = item.name;
-            navItem.style.cssText = `
-              background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-              color: white;
-              border: none;
-              padding: 12px 20px;
-              border-radius: 25px;
-              font-size: 16px;
-              font-weight: 600;
-              font-family: inherit;
-              cursor: pointer;
-              transition: all 0.3s ease;
-              box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
-            `;
-            
-            navItem.addEventListener('click', () => {
-              this.showSection(item.id);
-            });
-            
-            navItem.addEventListener('mouseover', () => {
-              navItem.style.transform = 'translateY(-2px) scale(1.05)';
-              navItem.style.boxShadow = '0 6px 20px rgba(255, 152, 0, 0.4)';
-            });
-            
-            navItem.addEventListener('mouseout', () => {
-              navItem.style.transform = 'translateY(0) scale(1)';
-              navItem.style.boxShadow = '0 4px 15px rgba(255, 152, 0, 0.3)';
-            });
-            
-            navMenu.appendChild(navItem);
-          });
-
-          // 插入导航菜单
-          const container = document.querySelector('.container');
-          const h1 = container.querySelector('h1');
-          container.insertBefore(navMenu, h1.nextSibling);
-
-          // 默认显示第一个部分
-          this.showSection('recommend');
-        }
-
-        // 显示指定部分
-        showSection(sectionId) {
-          // 隐藏所有部分
-          const sections = document.querySelectorAll('.section');
-          sections.forEach(section => {
-            section.style.display = 'none';
-          });
-
-          // 显示指定部分
-          const targetSection = document.getElementById(sectionId + '-form').closest('.section');
-          if (targetSection) {
-            targetSection.style.display = 'block';
-            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
-
-        // 处理啤酒推荐响应
-        processRecommendResponse(result, responseDiv) {
-          if (result.success && result.recommendations) {
-            let html = '<h3>推荐结果</h3><div class="recommendation-list">';
-            
-            result.recommendations.forEach((beer, index) => {
-              html += `
-                <div class="recommendation-item">
-                  <h4>${index + 1}. ${beer.name}</h4>
-                  <div class="beer-info" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #ffcc80;">
-                    <p><strong>风格：</strong>${beer.style}</p>
-                    <p><strong>酒精度：</strong>${beer.abv}</p>
-                  </div>
-                  <div class="beer-description">
-                    <p><strong>推荐理由：</strong>${beer.reason}</p>
-                    <p><strong>饮用场景：</strong>${beer.drinking_scenario}</p>
-                  </div>
-                  <button onclick="app.saveRecommendation('${beer.name}')" style="margin-top: 15px; padding: 8px 15px; font-size: 14px; background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%);">❤️ 收藏</button>
-                </div>
-              `;
-            });
-            
-            html += '</div>';
-            responseDiv.innerHTML = html;
-          } else {
-            responseDiv.innerHTML = `
-              <h3>错误</h3>
-              <p>${result.message || '推荐生成失败'}</p>
-              <button onclick="app.resetForm('${responseDiv.id}')" style="margin-top: 10px;">重试</button>
-            `;
-          }
-        }
-
-        // 处理知识问答响应
-        processKnowledgeResponse(result, responseDiv) {
-          if (result.success) {
-            // 将答案内容分段显示，提高可读性
-            const formattedAnswer = result.answer.replace(/\n/g, '<br>');
-            
-            responseDiv.innerHTML = `
-              <h3>答案</h3>
-              <div style="background-color: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                ${formattedAnswer}
-              </div>
-              <button onclick="app.copyToClipboard('${responseDiv.id}')" style="margin-top: 10px;">📋 复制答案</button>
-            `;
-          } else {
-            responseDiv.innerHTML = `
-              <h3>错误</h3>
-              <p>${result.message || '回答生成失败'}</p>
-              <button onclick="app.resetForm('${responseDiv.id}')" style="margin-top: 10px;">重试</button>
-            `;
-          }
-        }
-
-        // 处理搭配推荐响应
-        processPairingResponse(result, responseDiv) {
-          if (result.success && result.pairings) {
-            let html = '<h3>搭配推荐</h3>';
-            html += '<div class="recommendation-list">';
-            
-            result.pairings.forEach((pairing, index) => {
-              html += `
-                <div class="recommendation-item">
-                  <h4>${index + 1}. ${pairing.beer}</h4>
-                  <p><strong>搭配食物：</strong>${pairing.food}</p>
-                  <p><strong>搭配理由：</strong>${pairing.reason}</p>
-                  <button onclick="app.sharePairing('${pairing.beer}', '${pairing.food}')" style="margin-top: 10px; padding: 8px 15px; font-size: 14px;">📤 分享</button>
-                </div>
-              `;
-            });
-            
-            html += '</div>';
-            responseDiv.innerHTML = html;
-          } else {
-            responseDiv.innerHTML = `
-              <h3>错误</h3>
-              <p>${result.message || '搭配推荐生成失败'}</p>
-              <button onclick="app.resetForm('${responseDiv.id}')" style="margin-top: 10px;">重试</button>
-            `;
-          }
-        }
-
-        // 处理风格指南响应
-        processStyleGuideResponse(result, responseDiv) {
-          if (result.success) {
-            responseDiv.innerHTML = `
-              <h3>风格指南</h3>
-              <p>${result.guide}</p>
-              <button onclick="app.copyToClipboard('${responseDiv.id}')" style="margin-top: 10px;">📋 复制指南</button>
-            `;
-          } else {
-            responseDiv.innerHTML = `
-              <h3>错误</h3>
-              <p>${result.message || '风格指南生成失败'}</p>
-              <button onclick="app.resetForm('${responseDiv.id}')" style="margin-top: 10px;">重试</button>
-            `;
-          }
-        }
-
-        // 保存推荐到本地存储
-        saveRecommendation(beerName) {
-          let savedRecommendations = JSON.parse(localStorage.getItem('beerRecommendations')) || [];
-          
-          if (!savedRecommendations.includes(beerName)) {
-            savedRecommendations.push(beerName);
-            localStorage.setItem('beerRecommendations', JSON.stringify(savedRecommendations));
-            alert(`已收藏：${beerName}`);
-          } else {
-            alert(`已经收藏过：${beerName}`);
-          }
-        }
-
-        // 复制内容到剪贴板
-        async copyToClipboard(responseId) {
-          const responseDiv = document.getElementById(responseId);
-          const content = responseDiv.querySelector('p').textContent;
-          
-          try {
-            await navigator.clipboard.writeText(content);
-            alert('内容已复制到剪贴板！');
-          } catch (err) {
-            alert('复制失败：' + err.message);
-          }
-        }
-
-        // 分享搭配推荐
-        sharePairing(beer, food) {
-          const shareText = `🍻 推荐搭配：${beer} + ${food}\n来自精酿啤酒推荐系统`;
-          
-          if (navigator.share) {
-            navigator.share({
-              title: '精酿啤酒搭配推荐',
-              text: shareText
-            }).catch(err => {
-              console.error('分享失败：', err);
-              this.fallbackShare(shareText);
-            });
-          } else {
-            this.fallbackShare(shareText);
-          }
-        }
-
-        // 降级分享方案
-        fallbackShare(text) {
-          navigator.clipboard.writeText(text).then(() => {
-            alert('分享内容已复制到剪贴板！');
-          }).catch(err => {
-            alert('分享失败：' + err.message);
           });
         }
       }
 
-      // 初始化应用
-      const app = new BeerRecommendationApp();
+      document.addEventListener('DOMContentLoaded', () => {
+        window.app = new BeerCustomizationApp();
+      });
     </script>
   </body>
 </html>
