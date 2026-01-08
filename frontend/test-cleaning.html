@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>格式清洗功能测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4a2b12;
+            padding-bottom: 10px;
+        }
+        .test-case {
+            margin-bottom: 30px;
+        }
+        .test-label {
+            font-weight: bold;
+            color: #4a2b12;
+            margin-bottom: 10px;
+        }
+        .original-text {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+        .cleaned-text {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #4a2b12;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #6b3d1e;
+        }
+    </style>
+</head>
+<body>
+    <h1>格式清洗功能测试</h1>
+    
+    <div class="test-section">
+        <h2>测试用例 1: Markdown 格式标记移除</h2>
+        <div class="test-case">
+            <div class="test-label">原始文本：</div>
+            <div class="original-text" id="test1-original">### 标题
+这是**加粗**文本和*斜体*文本。
+这是~~删除线~~文本。
+这是`代码`文本。
+---
+这是分割线
+- 列表项1
+- 列表项2</div>
+            <button onclick="testCleanMarkdown()">测试清洗</button>
+            <div class="test-label">清洗后文本：</div>
+            <div class="cleaned-text" id="test1-cleaned"></div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试用例 2: 编号样式清除</h2>
+        <div class="test-case">
+            <div class="test-label">原始文本：</div>
+            <div class="original-text" id="test2-original">1. 第一点
+2. 第二点
+3. 第三点
+a. 子项A
+b. 子项B
+i. 罗马数字1
+ii. 罗马数字2</div>
+            <button onclick="testRemoveNumbering()">测试清洗</button>
+            <div class="test-label">清洗后文本：</div>
+            <div class="cleaned-text" id="test2-cleaned"></div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试用例 3: 段落长度截断</h2>
+        <div class="test-case">
+            <div class="test-label">原始文本：</div>
+            <div class="original-text" id="test3-original">这是一个非常长的段落，它包含了很多文字内容，超过了我们设定的最大长度限制，所以应该被截断并添加省略号来表示还有更多内容没有被显示出来，这样可以保持页面的整洁和美观。</div>
+            <button onclick="testTruncateParagraph()">测试清洗</button>
+            <div class="test-label">清洗后文本：</div>
+            <div class="cleaned-text" id="test3-cleaned"></div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试用例 4: 完整格式清洗</h2>
+        <div class="test-case">
+            <div class="test-label">原始文本：</div>
+            <div class="original-text" id="test4-original">### 啤酒介绍
+这是一款**精酿啤酒**，具有*独特*的风味。
+
+1. 特点一：口感醇厚
+2. 特点二：香气浓郁
+3. 特点三：回味悠长
+
+这款啤酒采用传统工艺酿造，历史悠久，是精酿爱好者的首选。它的酒精度适中，苦度平衡，适合各种场合饮用。</div>
+            <button onclick="testFullCleaning()">测试清洗</button>
+            <div class="test-label">清洗后文本：</div>
+            <div class="cleaned-text" id="test4-cleaned"></div>
+        </div>
+    </div>
+    
+    <script>
+        function cleanMarkdownText(text) {
+            let cleaned = text;
+            
+            cleaned = cleaned.replace(/^#{1,6}\s+/gm, '');
+            cleaned = cleaned.replace(/\*\*(.*?)\*\*/g, '$1');
+            cleaned = cleaned.replace(/\*(.*?)\*/g, '$1');
+            cleaned = cleaned.replace(/~~(.*?)~~/g, '$1');
+            cleaned = cleaned.replace(/`{1,3}(.*?)`{1,3}/g, '$1');
+            cleaned = cleaned.replace(/---+/g, '');
+            cleaned = cleaned.replace(/^\s*[-*+]\s+/gm, '');
+            cleaned = cleaned.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+            cleaned = cleaned.replace(/^>\s+/gm, '');
+            
+            return cleaned;
+        }
+        
+        function removeNumberedLists(text) {
+            let cleaned = text;
+            
+            cleaned = cleaned.replace(/^\s*\d+\.\s+/gm, '');
+            cleaned = cleaned.replace(/^\s*\d+\)\s+/gm, '');
+            cleaned = cleaned.replace(/^\s*[a-zA-Z]\.\s+/gm, '');
+            cleaned = cleaned.replace(/^\s*[ivxIVX]+\.\s+/gm, '');
+            
+            return cleaned;
+        }
+        
+        function truncateParagraphs(text, maxLength = 100) {
+            const paragraphs = text.split(/\n\n+/);
+            const truncated = paragraphs.map(paragraph => {
+                const cleanParagraph = paragraph.replace(/\n/g, ' ').trim();
+                if (cleanParagraph.length > maxLength) {
+                    const truncatedText = cleanParagraph.substring(0, maxLength);
+                    const lastSpace = truncatedText.lastIndexOf(' ');
+                    if (lastSpace > maxLength * 0.7) {
+                        return truncatedText.substring(0, lastSpace) + '...';
+                    }
+                    return truncatedText + '...';
+                }
+                return cleanParagraph;
+            });
+            
+            return truncated.join('\n\n');
+        }
+        
+        function formatTextForDisplay(text) {
+            let formatted = text;
+            
+            formatted = cleanMarkdownText(formatted);
+            formatted = removeNumberedLists(formatted);
+            formatted = truncateParagraphs(formatted, 100);
+            
+            formatted = formatted.replace(/\n{3,}/g, '\n\n');
+            formatted = formatted.trim();
+            
+            return formatted;
+        }
+        
+        function testCleanMarkdown() {
+            const original = document.getElementById('test1-original').textContent;
+            const cleaned = cleanMarkdownText(original);
+            document.getElementById('test1-cleaned').textContent = cleaned;
+        }
+        
+        function testRemoveNumbering() {
+            const original = document.getElementById('test2-original').textContent;
+            const cleaned = removeNumberedLists(original);
+            document.getElementById('test2-cleaned').textContent = cleaned;
+        }
+        
+        function testTruncateParagraph() {
+            const original = document.getElementById('test3-original').textContent;
+            const cleaned = truncateParagraphs(original, 100);
+            document.getElementById('test3-cleaned').textContent = cleaned;
+        }
+        
+        function testFullCleaning() {
+            const original = document.getElementById('test4-original').textContent;
+            const cleaned = formatTextForDisplay(original);
+            document.getElementById('test4-cleaned').textContent = cleaned;
+        }
+    </script>
+</body>
+</html>

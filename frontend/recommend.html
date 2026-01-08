@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>精酿推荐 - 定制专属精酿</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #fce0ba 0%, #fee7b7 50%, #fce0ba 100%);
+        color: #4a2b12;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+          radial-gradient(circle at 20% 30%, rgba(255, 248, 239, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(255, 248, 239, 0.2) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #4a2b12;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(74, 43, 18, 0.1);
+        position: relative;
+        letter-spacing: 2px;
+      }
+
+      .back-btn {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 18px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      .section {
+        background: #fff8ef;
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        padding: 35px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(74, 43, 18, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .familiarity-section {
+        background: #fff8ef;
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        padding: 35px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(74, 43, 18, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .familiarity-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #4a2b12;
+        font-size: 1.8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .familiarity-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      .familiarity-card {
+        background: linear-gradient(145deg, #fff8ef 0%, #f5ebe0 100%);
+        border: 2px solid #d4b896;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 2px 8px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .familiarity-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4b230e 0%, #6b3a1e 50%, #4b230e 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .familiarity-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+          0 6px 20px rgba(74, 43, 18, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        border-color: #4a2b12;
+      }
+
+      .familiarity-card:hover::before {
+        opacity: 1;
+      }
+
+      .familiarity-card.selected {
+        border-color: #4a2b12;
+        background: linear-gradient(145deg, #fff8ef 0%, #fef3e7 100%);
+        box-shadow: 
+          0 6px 20px rgba(74, 43, 18, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .familiarity-card.selected::before {
+        opacity: 1;
+      }
+
+      .familiarity-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+      }
+
+      .familiarity-card:hover .familiarity-icon {
+        transform: scale(1.1);
+      }
+
+      .familiarity-level {
+        color: #4a2b12;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+      }
+
+      .familiarity-desc {
+        color: #6b4a2a;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .advanced-field {
+        transition: all 0.4s ease;
+        opacity: 1;
+        max-height: 100px;
+        overflow: hidden;
+      }
+
+      .advanced-field.hidden {
+        opacity: 0;
+        max-height: 0;
+        margin-bottom: 0;
+        padding: 0;
+      }
+
+      .form-section {
+        animation: slideIn 0.5s ease-in-out;
+      }
+
+      .form-header {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #d4b896;
+      }
+
+      .reselect-btn {
+        background: transparent;
+        color: #4a2b12;
+        border: 2px solid #d4b896;
+        padding: 8px 20px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .reselect-btn:hover {
+        background: #4a2b12;
+        color: #ceb288;
+        border-color: #4a2b12;
+        transform: translateX(-3px);
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        margin-bottom: 30px;
+        color: #4a2b12;
+        border-bottom: 3px solid #4a2b12;
+        padding-bottom: 15px;
+        font-size: 1.8rem;
+        font-weight: 600;
+        position: relative;
+        letter-spacing: 1px;
+      }
+
+      h2::before {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #4a2b12;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .mood-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .mood-input-wrapper input[type="text"] {
+        padding-right: 50px;
+      }
+
+      .mood-icon-preview {
+        position: absolute;
+        right: 15px;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+        pointer-events: none;
+      }
+
+      .mood-icon-preview.update {
+        transform: scale(1.2);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4a2b12;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      input[type="text"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #d4b896;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        background: #fff8ef;
+        color: #4a2b12;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #4a2b12;
+        box-shadow: 0 0 0 3px rgba(74, 43, 18, 0.1);
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      button[type="submit"] {
+        background: linear-gradient(145deg, #4b230e 0%, #3a1b0a 100%);
+        color: #ceb288;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 6px 18px rgba(75, 35, 14, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, #5a2d12 0%, #4b230e 100%);
+      }
+
+      button[type="submit"]:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .response {
+        margin-top: 30px;
+        padding: 30px;
+        background: linear-gradient(145deg, #fff8ef 0%, #f5ebe0 100%);
+        border-radius: 15px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        border: 2px solid #d4b896;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #4a2b12;
+        font-size: 1.1rem;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      .error {
+        color: #c0392b;
+        background: #fff5f5;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #c0392b;
+      }
+
+      .recommendation-summary {
+        background: linear-gradient(135deg, #4a2b12 0%, #6b3d1e 100%);
+        color: #ceb288;
+        padding: 25px 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(74, 43, 18, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .recommendation-summary::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%, 100% { transform: translate(-30%, -30%); }
+        50% { transform: translate(30%, 30%); }
+      }
+
+      .recommendation-summary h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.3rem;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+      }
+
+      .recommendation-summary p {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+      }
+
+      .beer-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+      }
+
+      .beer-card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 
+          0 4px 15px rgba(74, 43, 18, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        border: 2px solid #d4b896;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .beer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+          0 8px 25px rgba(74, 43, 18, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      }
+
+      .beer-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #d4b896 0%, #ceb288 50%, #d4b896 100%);
+      }
+
+      .beer-header {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f5ebe0;
+      }
+
+      .recommendation-conclusion {
+        background: linear-gradient(135deg, #4b230e 0%, #6b3d1e 100%);
+        color: #fff;
+        padding: 16px 20px;
+        border-radius: 10px;
+        margin-bottom: 16px;
+        box-shadow: 
+          0 4px 12px rgba(75, 35, 14, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid #ceb288;
+      }
+
+      .recommendation-conclusion::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%, 100% { transform: translate(-30%, -30%); }
+        50% { transform: translate(30%, 30%); }
+      }
+
+      .recommendation-conclusion .conclusion-text {
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.5;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        letter-spacing: 0.5px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .recommendation-conclusion .conclusion-icon {
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 1.2rem;
+      }
+
+      .recommendation-conclusion.loading {
+        background: linear-gradient(135deg, #6b3d1e 0%, #8b4d2e 100%);
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .recommendation-conclusion.loading .conclusion-text {
+        font-weight: 500;
+        font-style: italic;
+      }
+
+      .recommendation-conclusion.error {
+        background: linear-gradient(135deg, #8b3d1e 0%, #ab4d2e 100%);
+        border-color: #e8b896;
+      }
+
+      .beer-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4a2b12;
+        margin: 0 0 8px 0;
+        line-height: 1.3;
+      }
+
+      .brewery-name {
+        font-size: 1rem;
+        color: #6b3d1e;
+        margin: 0;
+        font-weight: 500;
+      }
+
+      .beer-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .info-item {
+        background: #fff8ef;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #e8d5c4;
+      }
+
+      .info-item.style-item {
+        grid-column: span 1;
+      }
+
+      .info-label {
+        font-size: 0.8rem;
+        color: #8b6f47;
+        margin-bottom: 3px;
+        font-weight: 500;
+      }
+
+      .info-value {
+        font-size: 0.95rem;
+        color: #4a2b12;
+        font-weight: 600;
+      }
+
+      .info-description {
+        font-size: 0.7rem;
+        color: #a08060;
+        margin-top: 3px;
+        font-weight: 400;
+      }
+
+      .style-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 6px;
+      }
+
+      .style-tag {
+        display: inline-block;
+        padding: 3px 8px;
+        background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+        color: #4a2b12;
+        font-size: 0.7rem;
+        border-radius: 10px;
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .purchase-bar {
+        background: linear-gradient(135deg, #4a2b12 0%, #6b3d1e 100%);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        box-shadow: 0 4px 12px rgba(74, 43, 18, 0.3);
+      }
+
+      .price-display {
+        flex: 1;
+      }
+
+      .price-label {
+        font-size: 0.75rem;
+        color: #ceb288;
+        margin-bottom: 2px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .price-value {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .purchase-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .purchase-btn {
+        background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(192, 57, 43, 0.3);
+        white-space: nowrap;
+      }
+
+      .purchase-btn:hover {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        box-shadow: 0 6px 16px rgba(192, 57, 43, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .purchase-secondary-btn {
+        background: rgba(255, 255, 255, 0.15);
+        color: #ceb288;
+        border: 2px solid rgba(206, 178, 136, 0.3);
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .purchase-secondary-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+        border-color: rgba(206, 178, 136, 0.5);
+      }
+
+      .beer-description {
+        background: linear-gradient(135deg, #fff8ef 0%, #f5ebe0 100%);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #d4b896;
+      }
+
+      .beer-description h4 {
+        margin: 0 0 15px 0;
+        font-size: 1rem;
+        color: #4a2b12;
+        font-weight: 600;
+      }
+
+      .recommendation-reasons {
+        display: grid;
+        gap: 12px;
+      }
+
+      .reason-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 12px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e8d5c4;
+        transition: all 0.3s ease;
+      }
+
+      .reason-item:hover {
+        box-shadow: 0 2px 8px rgba(212, 184, 150, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .reason-icon {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+        border-radius: 6px;
+        font-size: 1.1rem;
+      }
+
+      .reason-content {
+        flex: 1;
+      }
+
+      .reason-label {
+        font-size: 0.8rem;
+        color: #8b6f47;
+        font-weight: 600;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .reason-text {
+        font-size: 0.9rem;
+        color: #4a2b12;
+        line-height: 1.4;
+        font-weight: 500;
+      }
+
+      .beer-description p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #6b3d1e;
+        line-height: 1.6;
+      }
+
+      .beer-description .user-match {
+        color: #8b6f47;
+        font-style: italic;
+        font-size: 0.9rem;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed #d4b896;
+      }
+
+      @media (max-width: 768px) {
+        .beer-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .beer-info {
+          grid-template-columns: 1fr;
+        }
+
+        .info-item.style-item {
+          grid-column: span 1;
+        }
+
+        .style-tags {
+          gap: 4px;
+        }
+
+        .style-tag {
+          padding: 3px 8px;
+          font-size: 0.7rem;
+        }
+
+        .info-description {
+          font-size: 0.7rem;
+        }
+
+        .purchase-bar {
+          flex-direction: column;
+          padding: 14px 16px;
+          gap: 12px;
+        }
+
+        .price-display {
+          text-align: center;
+        }
+
+        .price-value {
+          font-size: 2rem;
+        }
+
+        .purchase-actions {
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .purchase-btn,
+        .purchase-secondary-btn {
+          width: 100%;
+          padding: 12px 20px;
+        }
+
+        .recommendation-reasons {
+          gap: 10px;
+        }
+
+        .reason-item {
+          padding: 8px 10px;
+        }
+
+        .reason-icon {
+          width: 28px;
+          height: 28px;
+          font-size: 1rem;
+        }
+
+        .reason-label {
+          font-size: 0.75rem;
+        }
+
+        .reason-text {
+          font-size: 0.85rem;
+        }
+
+        .recommendation-summary h3 {
+          font-size: 1.1rem;
+        }
+
+        .recommendation-summary p {
+          font-size: 1rem;
+        }
+
+        .recommendation-conclusion .conclusion-text {
+          font-size: 1rem;
+          font-weight: 600;
+        }
+
+        .recommendation-conclusion .conclusion-icon {
+          font-size: 1.1rem;
+          margin-right: 6px;
+        }
+
+        .recommendation-conclusion {
+          padding: 14px 16px;
+          margin-bottom: 14px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px 15px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        .familiarity-title {
+          font-size: 1.4rem;
+        }
+
+        .familiarity-options {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .familiarity-card {
+          padding: 25px 20px;
+        }
+
+        .familiarity-icon {
+          font-size: 2.5rem;
+        }
+
+        .familiarity-level {
+          font-size: 1.2rem;
+        }
+
+        .familiarity-desc {
+          font-size: 0.95rem;
+        }
+
+        .section {
+          padding: 25px 20px;
+        }
+
+        button[type="submit"] {
+          padding: 12px 30px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="back-btn">← 返回主页</a>
+      
+      <h1>精酿推荐</h1>
+      
+      <div class="familiarity-section" id="familiarity-section">
+        <h2 class="familiarity-title">请选择您的精酿熟悉程度</h2>
+        <div class="familiarity-options">
+          <div class="familiarity-card" data-level="beginner">
+            <div class="familiarity-icon">🌱</div>
+            <h3 class="familiarity-level">新手</h3>
+            <p class="familiarity-desc">不太懂精酿，想快速得到推荐</p>
+          </div>
+          
+          <div class="familiarity-card" data-level="advanced">
+            <div class="familiarity-icon">🍺</div>
+            <h3 class="familiarity-level">进阶</h3>
+            <p class="familiarity-desc">了解精酿，有明确偏好</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section" id="form-section" style="display: none;">
+        <div class="form-header">
+          <button type="button" class="reselect-btn" id="reselect-btn">← 重新选择熟悉度</button>
+        </div>
+        <form id="recommend-form">
+          <div class="form-group">
+            <label for="mood">心情状态</label>
+            <div class="mood-input-wrapper">
+              <input type="text" id="mood" name="mood" placeholder="例如：放松、兴奋、疲惫" required>
+              <span class="mood-icon-preview" id="mood-icon-preview">😊</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="taste">口味偏好</label>
+            <input type="text" id="taste" name="taste" placeholder="例如：甜、苦、酸、平衡" required>
+          </div>
+          <div class="form-group advanced-field" id="hop-group">
+            <label for="hop">酒花偏好</label>
+            <input type="text" id="hop" name="hop" placeholder="例如：柑橘味、热带水果味、松针味">
+          </div>
+          <div class="form-group advanced-field" id="style-group">
+            <label for="style">精酿风格偏好</label>
+            <input type="text" id="style" name="style" placeholder="例如：IPA、世涛、酸艾尔、拉格">
+          </div>
+          <button type="submit">获取推荐</button>
+        </form>
+        <div id="recommend-response" class="response"></div>
+      </div>
+    </div>
+
+    <script src="js/analytics.js"></script>
+    <script>
+      class BeerRecommendationApp {
+        constructor() {
+          this.API_BASE_URL = 'http://localhost:8001/api/v1/beer';
+          this.selectedScenario = this.getScenarioFromURL();
+          this.selectedFamiliarity = null;
+          this.init();
+        }
+
+        getScenarioFromURL() {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get('scenario') || 'relax';
+        }
+
+        init() {
+          this.bindFamiliarityCards();
+          this.bindFormEvents();
+          this.addFormValidation();
+          this.bindReselectButton();
+        }
+
+        bindReselectButton() {
+          const reselectBtn = document.getElementById('reselect-btn');
+          reselectBtn.addEventListener('click', () => {
+            this.showFamiliaritySelection();
+          });
+        }
+
+        showFamiliaritySelection() {
+          const familiaritySection = document.getElementById('familiarity-section');
+          const formSection = document.getElementById('form-section');
+          const form = document.getElementById('recommend-form');
+          
+          form.reset();
+          
+          formSection.style.display = 'none';
+          formSection.classList.remove('form-section');
+          
+          familiaritySection.style.display = 'block';
+          
+          const familiarityCards = document.querySelectorAll('.familiarity-card');
+          familiarityCards.forEach(card => {
+            card.classList.remove('selected');
+          });
+          
+          this.selectedFamiliarity = null;
+          
+          const responseDiv = document.getElementById('recommend-response');
+          responseDiv.innerHTML = '';
+        }
+
+        bindFamiliarityCards() {
+          const familiarityCards = document.querySelectorAll('.familiarity-card');
+          
+          familiarityCards.forEach(card => {
+            card.addEventListener('click', () => {
+              const level = card.getAttribute('data-level');
+              this.selectFamiliarity(level);
+            });
+          });
+        }
+
+        selectFamiliarity(level) {
+          this.selectedFamiliarity = level;
+          
+          const familiarityCards = document.querySelectorAll('.familiarity-card');
+          familiarityCards.forEach(card => {
+            card.classList.remove('selected');
+            if (card.getAttribute('data-level') === level) {
+              card.classList.add('selected');
+            }
+          });
+          
+          const familiaritySection = document.getElementById('familiarity-section');
+          const formSection = document.getElementById('form-section');
+          
+          setTimeout(() => {
+            familiaritySection.style.display = 'none';
+            formSection.style.display = 'block';
+            formSection.classList.add('form-section');
+            
+            if (level === 'beginner') {
+              this.showBeginnerFields();
+            } else {
+              this.showAdvancedFields();
+            }
+          }, 300);
+        }
+
+        showBeginnerFields() {
+          const hopGroup = document.getElementById('hop-group');
+          const styleGroup = document.getElementById('style-group');
+          
+          hopGroup.classList.add('hidden');
+          styleGroup.classList.add('hidden');
+          
+          const hopInput = document.getElementById('hop');
+          const styleInput = document.getElementById('style');
+          hopInput.required = false;
+          styleInput.required = false;
+        }
+
+        showAdvancedFields() {
+          const hopGroup = document.getElementById('hop-group');
+          const styleGroup = document.getElementById('style-group');
+          
+          hopGroup.classList.remove('hidden');
+          styleGroup.classList.remove('hidden');
+          
+          const hopInput = document.getElementById('hop');
+          const styleInput = document.getElementById('style');
+          hopInput.required = true;
+          styleInput.required = true;
+        }
+
+        inferAdvancedParameters(mood, taste) {
+          try {
+            if (!mood || !taste) {
+              console.warn('推断参数失败：心情状态或口味偏好为空');
+              return {
+                hop: '柑橘味、花香',
+                style: '小麦啤、拉格',
+                ibu: '20-40',
+                aroma: 3
+              };
+            }
+
+            const moodLower = mood.toLowerCase().trim();
+            const tasteLower = taste.toLowerCase().trim();
+            
+            if (moodLower.length > 50 || tasteLower.length > 50) {
+              console.warn('输入过长，使用默认推断参数');
+              return {
+                hop: '柑橘味、花香',
+                style: '小麦啤、拉格',
+                ibu: '20-40',
+                aroma: 3
+              };
+            }
+            
+            let hopPreference = '';
+            let stylePreference = '';
+            let ibuRange = '';
+            let aromaIntensity = '';
+            
+            const tasteToHop = {
+              '甜': '柑橘味、热带水果味',
+              '苦': '松针味、松脂味',
+              '酸': '花香、果香',
+              '平衡': '温和的柑橘味、花香',
+              '清爽': '柠檬味、青柠味',
+              '浓郁': '松脂味、热带水果味',
+              '果香': '热带水果味、柑橘味',
+              '花香': '花香、柑橘味',
+              '麦香': '温和的酒花香气'
+            };
+            
+            const moodToStyle = {
+              '放松': '小麦啤、比利时白啤',
+              '兴奋': 'IPA、美式艾尔',
+              '疲惫': '拉格、皮尔森',
+              '开心': '小麦啤、水果艾尔',
+              '忧郁': '世涛、波特',
+              '平静': '拉格、皮尔森',
+              '冒险': 'IPA、酸艾尔',
+              '舒适': '小麦啤、比利时白啤',
+              '社交': '拉格、小麦啤',
+              '独处': '世涛、IPA'
+            };
+            
+            const tasteToIBU = {
+              '甜': '10-25',
+              '苦': '40-70',
+              '酸': '15-30',
+              '平衡': '20-40',
+              '清爽': '10-20',
+              '浓郁': '50-80',
+              '果香': '20-35',
+              '花香': '25-45',
+              '麦香': '15-30'
+            };
+            
+            const tasteToAroma = {
+              '甜': 3,
+              '苦': 4,
+              '酸': 3,
+              '平衡': 2,
+              '清爽': 2,
+              '浓郁': 5,
+              '果香': 4,
+              '花香': 4,
+              '麦香': 2
+            };
+            
+            for (const [key, value] of Object.entries(tasteToHop)) {
+              if (tasteLower.includes(key)) {
+                hopPreference = value;
+                break;
+              }
+            }
+            
+            for (const [key, value] of Object.entries(moodToStyle)) {
+              if (moodLower.includes(key)) {
+                stylePreference = value;
+                break;
+              }
+            }
+            
+            for (const [key, value] of Object.entries(tasteToIBU)) {
+              if (tasteLower.includes(key)) {
+                ibuRange = value;
+                break;
+              }
+            }
+            
+            for (const [key, value] of Object.entries(tasteToAroma)) {
+              if (tasteLower.includes(key)) {
+                aromaIntensity = value;
+                break;
+              }
+            }
+            
+            if (!hopPreference) {
+              hopPreference = '柑橘味、花香';
+            }
+            
+            if (!stylePreference) {
+              stylePreference = '小麦啤、拉格';
+            }
+            
+            if (!ibuRange) {
+              ibuRange = '20-40';
+            }
+            
+            if (!aromaIntensity) {
+              aromaIntensity = 3;
+            }
+            
+            const result = {
+              hop: hopPreference,
+              style: stylePreference,
+              ibu: ibuRange,
+              aroma: aromaIntensity
+            };
+            
+            console.log('参数推断成功:', result);
+            return result;
+            
+          } catch (error) {
+            console.error('参数推断过程中发生错误:', error);
+            return {
+              hop: '柑橘味、花香',
+              style: '小麦啤、拉格',
+              ibu: '20-40',
+              aroma: 3
+            };
+          }
+        }
+
+        bindFormEvents() {
+          const form = document.getElementById('recommend-form');
+          form.addEventListener('submit', async (e) => {
+            await this.handleFormSubmit(e);
+          });
+
+          const moodInput = document.getElementById('mood');
+          const moodIconPreview = document.getElementById('mood-icon-preview');
+          
+          if (moodInput && moodIconPreview) {
+            moodInput.addEventListener('input', (e) => {
+              const mood = e.target.value.trim();
+              const icon = this.getMoodIcon(mood || '放松');
+              moodIconPreview.textContent = icon;
+              
+              moodIconPreview.classList.add('update');
+              setTimeout(() => {
+                moodIconPreview.classList.remove('update');
+              }, 300);
+            });
+          }
+        }
+
+        async handleFormSubmit(e) {
+          e.preventDefault();
+          
+          const form = e.target;
+          const responseDiv = document.getElementById('recommend-response');
+          const submitButton = form.querySelector('button[type="submit"]');
+          
+          if (!this.validateForm(form)) {
+            return;
+          }
+          
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData);
+          
+          if (!data.mood || !data.taste) {
+            this.showError(responseDiv, '请填写心情状态和口味偏好');
+            return;
+          }
+          
+          responseDiv.innerHTML = '';
+          this.showLoading(responseDiv);
+          
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = '处理中...';
+          }
+          
+          if (this.selectedFamiliarity === 'beginner') {
+            const inferredParams = this.inferAdvancedParameters(data.mood, data.taste);
+            data.hop = inferredParams.hop;
+            data.style = inferredParams.style;
+            data.ibu = inferredParams.ibu;
+            data.aroma = inferredParams.aroma;
+            
+            console.log('新手模式 - 推断参数:', inferredParams);
+          }
+          
+          const filteredData = {};
+          for (const [key, value] of Object.entries(data)) {
+            if (value !== '') {
+              filteredData[key] = value;
+            }
+          }
+          
+          if (this.selectedScenario) {
+            filteredData.scenario = this.selectedScenario;
+          }
+          
+          if (this.selectedFamiliarity) {
+            filteredData.familiarity = this.selectedFamiliarity;
+          }
+          
+          const inferredParams = {};
+          if (this.selectedFamiliarity === 'beginner') {
+            inferredParams.hop = filteredData.hop;
+            inferredParams.style = filteredData.style;
+            inferredParams.ibu = filteredData.ibu;
+            inferredParams.aroma = filteredData.aroma;
+          }
+          
+          analytics.recordRecommendationRequest(
+            this.selectedScenario,
+            this.selectedFamiliarity,
+            filteredData,
+            inferredParams
+          );
+          
+          try {
+            let url = `${this.API_BASE_URL}/recommend`;
+            
+            console.log('发送请求到:', url);
+            console.log('请求数据:', filteredData);
+            
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(filteredData)
+            });
+            
+            console.log('响应状态:', response.status);
+            
+            if (!response.ok) {
+              throw new Error(`HTTP错误！状态：${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('响应数据:', result);
+            
+            analytics.recordRecommendationResult(result.recommendations);
+            
+            this.processRecommendResponse(result, responseDiv);
+            
+          } catch (error) {
+            console.error('请求错误:', error);
+            this.showError(responseDiv, error.message);
+          } finally {
+            this.hideLoading(responseDiv);
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = '获取推荐';
+            }
+          }
+        }
+
+        validateField(field) {
+          const value = field.value.trim();
+          const isValid = value !== '';
+          
+          if (!isValid && field.hasAttribute('required')) {
+            field.style.borderColor = '#c0392b';
+          } else {
+            field.style.borderColor = '#d4b896';
+          }
+          
+          return isValid;
+        }
+
+        validateForm(form) {
+          const requiredFields = form.querySelectorAll('[required]');
+          let isValid = true;
+          
+          requiredFields.forEach(field => {
+            if (!this.validateField(field)) {
+              isValid = false;
+            }
+          });
+          
+          return isValid;
+        }
+
+        addFormValidation() {
+          const inputs = document.querySelectorAll('input[required], textarea[required]');
+          
+          inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+              this.validateField(input);
+            });
+            
+            input.addEventListener('input', () => {
+              if (input.value.trim() !== '') {
+                input.style.borderColor = '#d4b896';
+              }
+            });
+          });
+        }
+
+        showLoading(element) {
+          element.innerHTML = '<div class="loading">正在为您定制专属精酿...</div>';
+        }
+
+        hideLoading(element) {
+          const loading = element.querySelector('.loading');
+          if (loading) {
+            loading.remove();
+          }
+        }
+
+        showError(element, message) {
+          element.innerHTML = `<div class="error">❌ ${message}</div>`;
+        }
+
+        processRecommendResponse(result, element) {
+          if (result.recommendations && Array.isArray(result.recommendations)) {
+            const recommendations = result.recommendations.slice(0, 3);
+            const userMood = result.user_input?.mood || '当前心情';
+            const userTaste = result.user_input?.taste || '口味偏好';
+            const inferredHop = result.inferred_params?.hop || '';
+            const inferredStyle = result.inferred_params?.style || '';
+            
+            let html = '';
+            
+            html += '<div class="recommendation-summary">';
+            html += '<h3>🎯 专属推荐</h3>';
+            html += `<p>根据您${userMood}的心情和${userTaste}的口味，为您精选${recommendations.length}款精酿</p>`;
+            html += '</div>';
+            
+            html += '<div class="beer-cards">';
+            
+            recommendations.forEach((item, index) => {
+              const beerName = item.name || '精酿啤酒';
+              const brewery = item.brewery || '精酿酒厂';
+              const abv = item.abv || '5.0%';
+              const style = item.style || '精酿啤酒';
+              const volume = item.volume || '330ml';
+              const price = item.price || '¥35';
+              const reason = item.reason || '精选推荐';
+              const conclusion = item.conclusion || item.recommendation_conclusion || '';
+              
+              const structuredReasons = this.parseStructuredReasons(reason, userMood, userTaste, style);
+              const abvFormatted = this.formatABV(abv);
+              const styleParsed = this.parseStyleTags(style);
+              const moodIcon = this.getMoodIcon(userMood);
+              
+              html += `<div class="beer-card">
+                <div class="beer-header">
+                  <h4 class="beer-name">${beerName}</h4>
+                  <p class="brewery-name">${brewery}</p>
+                </div>`;
+              
+              if (conclusion) {
+                html += `<div class="recommendation-conclusion">
+                  <span class="conclusion-icon">💡</span>
+                  <span class="conclusion-text">${conclusion}</span>
+                </div>`;
+              }
+              
+              html += `<div class="beer-info">
+                  <div class="info-item">
+                    <div class="info-label">酒精度</div>
+                    <div class="info-value">${abvFormatted.value}</div>
+                    <div class="info-description">${abvFormatted.description}</div>
+                  </div>
+                  <div class="info-item style-item">
+                    <div class="info-label">风格</div>
+                    <div class="info-value">${styleParsed.base}</div>
+                    <div class="style-tags">
+                      ${styleParsed.tags.slice(0, 2).map(tag => `<span class="style-tag">${tag}</span>`).join('')}
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <div class="info-label">容量</div>
+                    <div class="info-value">${volume}</div>
+                  </div>
+                  <div class="info-item">
+                    <div class="info-label">价格</div>
+                    <div class="info-value">${price}</div>
+                  </div>
+                </div>
+                
+                <div class="purchase-bar">
+                  <div class="price-display">
+                    <div class="price-label">售价</div>
+                    <div class="price-value">${price}</div>
+                  </div>
+                  <div class="purchase-actions">
+                    <button class="purchase-secondary-btn" onclick="handleFavorite('${beerName}')">加入收藏</button>
+                    <button class="purchase-btn" onclick="handleBuy('${beerName}')">立即购买</button>
+                  </div>
+                </div>
+                
+                <div class="beer-description">
+                  <h4>🍺 为什么推荐这款</h4>
+                  <div class="recommendation-reasons">
+                    <div class="reason-item">
+                      <div class="reason-icon">${moodIcon}</div>
+                      <div class="reason-content">
+                        <div class="reason-label">心情匹配</div>
+                        <div class="reason-text">${structuredReasons.mood}</div>
+                      </div>
+                    </div>
+                    <div class="reason-item">
+                      <div class="reason-icon">👅</div>
+                      <div class="reason-content">
+                        <div class="reason-label">口味匹配</div>
+                        <div class="reason-text">${structuredReasons.taste}</div>
+                      </div>
+                    </div>
+                    <div class="reason-item">
+                      <div class="reason-icon">🍺</div>
+                      <div class="reason-content">
+                        <div class="reason-label">风格特点</div>
+                        <div class="reason-text">${structuredReasons.style}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+            });
+            
+            html += '</div>';
+            element.innerHTML = html;
+          } else {
+            element.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+          }
+        }
+
+        parseStructuredReasons(reason, userMood, userTaste, beerStyle) {
+          const moodReasons = {
+            '放松': '这款酒口感温和，适合放松时慢慢品味',
+            '兴奋': '酒体饱满，能激发您的热情与活力',
+            '疲惫': '清爽解腻，帮助您缓解疲劳',
+            '开心': '果香浓郁，与您愉悦的心情相得益彰',
+            '忧郁': '醇厚温暖，给人慰藉和陪伴',
+            '平静': '口感平衡，适合静静享受',
+            '冒险': '风味独特，带您探索新体验',
+            '舒适': '柔和顺滑，让人感到安心舒适',
+            '社交': '易饮性强，适合与朋友分享',
+            '独处': '层次丰富，适合独自细细品味'
+          };
+
+          const tasteReasons = {
+            '甜': '甜味适中，满足您的甜味偏好',
+            '苦': '苦度恰到好处，带来清爽的口感',
+            '酸': '酸味清新，开胃解腻',
+            '平衡': '酸甜苦平衡，口感和谐',
+            '清爽': '口感清爽，不油腻',
+            '浓郁': '风味浓郁，回味悠长',
+            '果香': '果香突出，香气诱人',
+            '花香': '花香馥郁，香气优雅',
+            '麦香': '麦香浓郁，口感醇厚'
+          };
+
+          const styleReasons = {
+            'IPA': '酒花香气突出，苦度适中',
+            '世涛': '酒体醇厚，焦香浓郁',
+            '小麦啤': '口感柔和，麦香清新',
+            '酸艾尔': '酸味清新，果香馥郁',
+            '拉格': '清爽干净，易饮性强',
+            '皮尔森': '苦度适中，口感清爽',
+            '比利时白啤': '香料香气，口感柔和',
+            '波特': '酒体适中，焦香明显',
+            '水果艾尔': '果香浓郁，口感甜美'
+          };
+
+          let moodReason = moodReasons[userMood] || '适合您当前的心情状态';
+          let tasteReason = tasteReasons[userTaste] || '符合您的口味偏好';
+          let styleReason = styleReasons[beerStyle] || `这款${beerStyle}风格啤酒独具特色`;
+
+          if (reason) {
+            const lowerReason = reason.toLowerCase();
+            
+            if (lowerReason.includes('心情') || lowerReason.includes('放松') || lowerReason.includes('兴奋')) {
+              const moodMatch = reason.match(/(放松|兴奋|疲惫|开心|忧郁|平静|冒险|舒适|社交|独处)/);
+              if (moodMatch) {
+                moodReason = moodReasons[moodMatch[1]] || moodReason;
+              }
+            }
+            
+            if (lowerReason.includes('口味') || lowerReason.includes('甜') || lowerReason.includes('苦') || lowerReason.includes('酸')) {
+              const tasteMatch = reason.match(/(甜|苦|酸|平衡|清爽|浓郁|果香|花香|麦香)/);
+              if (tasteMatch) {
+                tasteReason = tasteReasons[tasteMatch[1]] || tasteReason;
+              }
+            }
+            
+            if (lowerReason.includes('风格') || lowerReason.includes('ipa') || lowerReason.includes('世涛') || lowerReason.includes('小麦')) {
+              const styleMatch = reason.match(/(IPA|世涛|小麦啤|酸艾尔|拉格|皮尔森|比利时白啤|波特|水果艾尔)/i);
+              if (styleMatch) {
+                styleReason = styleReasons[styleMatch[1]] || styleReason;
+              }
+            }
+          }
+
+          return {
+            mood: moodReason,
+            taste: tasteReason,
+            style: styleReason
+          };
+        }
+
+        formatABV(abv) {
+          const abvValue = parseFloat(abv.replace('%', ''));
+          let description = '';
+          
+          if (abvValue < 4.0) {
+            description = '偏低，适合轻松饮用';
+          } else if (abvValue < 5.0) {
+            description = '适中，日常饮用无负担';
+          } else if (abvValue < 6.5) {
+            description = '标准，口感饱满';
+          } else if (abvValue < 8.0) {
+            description = '偏高，适合慢慢品味';
+          } else {
+            description = '高浓度，建议适量饮用';
+          }
+          
+          return {
+            value: abv,
+            description: description
+          };
+        }
+
+        getMoodIcon(mood) {
+          const moodIconMap = {
+            '放松': '😌',
+            '兴奋': '🎉',
+            '疲惫': '😴',
+            '开心': '😊',
+            '忧郁': '😢',
+            '平静': '😐',
+            '冒险': '🚀',
+            '舒适': '😌',
+            '社交': '👥',
+            '独处': '🧘'
+          };
+
+          const moodKey = Object.keys(moodIconMap).find(key => 
+            mood.includes(key)
+          );
+
+          return moodIconMap[moodKey] || '😊';
+        }
+
+        parseStyleTags(style) {
+          const styleMap = {
+            'IPA': {
+              base: 'IPA',
+              tags: ['酒花香气突出', '苦度适中偏高']
+            },
+            '世涛': {
+              base: '世涛',
+              tags: ['酒体醇厚', '焦香浓郁']
+            },
+            '小麦啤': {
+              base: '小麦啤',
+              tags: ['口感柔和', '麦香清新']
+            },
+            '酸艾尔': {
+              base: '酸艾尔',
+              tags: ['酸味清新', '果香馥郁']
+            },
+            '拉格': {
+              base: '拉格',
+              tags: ['清爽干净', '易饮性强']
+            },
+            '皮尔森': {
+              base: '皮尔森',
+              tags: ['苦度适中', '口感清爽']
+            },
+            '比利时白啤': {
+              base: '比利时白啤',
+              tags: ['香料香气', '口感柔和']
+            },
+            '波特': {
+              base: '波特',
+              tags: ['酒体适中', '焦香明显']
+            },
+            '水果艾尔': {
+              base: '水果艾尔',
+              tags: ['果香浓郁', '口感甜美']
+            }
+          };
+
+          const styleKey = Object.keys(styleMap).find(key => 
+            style.toLowerCase().includes(key.toLowerCase())
+          );
+
+          if (styleKey) {
+            return styleMap[styleKey];
+          }
+
+          return {
+            base: style,
+            tags: ['风格独特']
+          };
+        }
+
+        handleBuy(beerName) {
+          analytics.recordUserAction('buy', beerName);
+          alert(`正在为您跳转到购买页面：${beerName}`);
+        }
+
+        handleFavorite(beerName) {
+          analytics.recordUserAction('favorite', beerName);
+          alert(`已将 ${beerName} 添加到收藏列表`);
+        }
+
+        handleBrewery(breweryName) {
+          analytics.recordUserAction('view', null, { breweryName });
+          alert(`正在为您展示酒厂信息：${breweryName}`);
+        }
+      }
+
+      let appInstance = null;
+
+      function handleBuy(beerName) {
+        if (appInstance) {
+          appInstance.handleBuy(beerName);
+        }
+      }
+
+      function handleFavorite(beerName) {
+        if (appInstance) {
+          appInstance.handleFavorite(beerName);
+        }
+      }
+
+      function handleBrewery(breweryName) {
+        if (appInstance) {
+          appInstance.handleBrewery(breweryName);
+        }
+      }
+
+      appInstance = new BeerRecommendationApp();
+    </script>
+  </body>
+</html>
