@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数据分析 - 精酿推荐系统</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #fce0ba 0%, #fee7b7 50%, #fce0ba 100%);
+        color: #4a2b12;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.5rem;
+        color: #5c3a21;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: 2px solid #d4b896;
+        background: linear-gradient(135deg, #fff9f0 0%, #fff4e6 100%);
+        color: #5c3a21;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Noto Serif SC', serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn:hover {
+        background: linear-gradient(135deg, #fff4e6 0%, #ffe9d6 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, #d4b896 0%, #c4a886 100%);
+        color: white;
+        border-color: #b89876;
+      }
+
+      .btn.danger {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border-color: #c0392b;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .stat-card {
+        background: linear-gradient(135deg, #fff9f0 0%, #fff4e6 100%);
+        border: 2px solid #d4b896;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-card h3 {
+        font-size: 1.2rem;
+        color: #5c3a21;
+        margin-bottom: 10px;
+      }
+
+      .stat-card .value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #c4a886;
+      }
+
+      .stat-card .label {
+        font-size: 0.9rem;
+        color: #8b6914;
+        margin-top: 5px;
+      }
+
+      .section {
+        background: linear-gradient(135deg, #fff9f0 0%, #fff4e6 100%);
+        border: 2px solid #d4b896;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        font-size: 1.8rem;
+        color: #5c3a21;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #d4b896;
+      }
+
+      .charts-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+      }
+
+      .chart {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart h3 {
+        font-size: 1.2rem;
+        color: #5c3a21;
+        margin-bottom: 15px;
+      }
+
+      .bar-chart {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .bar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bar-label {
+        min-width: 100px;
+        font-size: 0.9rem;
+        color: #5c3a21;
+      }
+
+      .bar-container {
+        flex: 1;
+        height: 30px;
+        background: #f5f5f5;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #d4b896 0%, #c4a886 100%);
+        transition: width 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      .history-table th,
+      .history-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #d4b896;
+      }
+
+      .history-table th {
+        background: #f5f5f5;
+        font-weight: 600;
+        color: #5c3a21;
+      }
+
+      .history-table tr:hover {
+        background: #fff9f0;
+      }
+
+      .history-table .type-request {
+        color: #3498db;
+      }
+
+      .history-table .type-result {
+        color: #2ecc71;
+      }
+
+      .history-table .type-action {
+        color: #e67e22;
+      }
+
+      .detail-panel {
+        display: none;
+        background: white;
+        border: 2px solid #d4b896;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .detail-panel.active {
+        display: block;
+      }
+
+      .detail-panel h3 {
+        font-size: 1.3rem;
+        color: #5c3a21;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #d4b896;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .detail-item {
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 6px;
+      }
+
+      .detail-item .label {
+        font-size: 0.85rem;
+        color: #8b6914;
+        margin-bottom: 5px;
+      }
+
+      .detail-item .value {
+        font-size: 1rem;
+        color: #5c3a21;
+        font-weight: 500;
+      }
+
+      .actions-list {
+        margin-top: 15px;
+      }
+
+      .action-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 6px;
+        margin-bottom: 8px;
+      }
+
+      .action-item .action-type {
+        font-weight: 600;
+        color: #5c3a21;
+      }
+
+      .action-item .timestamp {
+        font-size: 0.85rem;
+        color: #8b6914;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #8b6914;
+      }
+
+      .empty-state .icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+        }
+
+        .charts-container {
+          grid-template-columns: 1fr;
+        }
+
+        .history-table {
+          font-size: 0.85rem;
+        }
+
+        .history-table th,
+        .history-table td {
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📊 数据分析中心</h1>
+
+      <div class="header">
+        <div class="header-actions">
+          <button class="btn primary" onclick="loadAnalytics()">刷新数据</button>
+          <button class="btn" onclick="exportData()">导出数据</button>
+          <button class="btn danger" onclick="clearData()">清除数据</button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>总推荐请求</h3>
+          <div class="value" id="total-requests">0</div>
+          <div class="label">用户发起的推荐次数</div>
+        </div>
+        <div class="stat-card">
+          <h3>总推荐结果</h3>
+          <div class="value" id="total-results">0</div>
+          <div class="label">成功返回的推荐结果</div>
+        </div>
+        <div class="stat-card">
+          <h3>用户操作</h3>
+          <div class="value" id="total-actions">0</div>
+          <div class="label">购买、收藏、查看等操作</div>
+        </div>
+        <div class="stat-card">
+          <h3>新手用户</h3>
+          <div class="value" id="beginner-count">0</div>
+          <div class="label">选择新手模式的用户</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📈 使用场景分布</h2>
+        <div class="charts-container">
+          <div class="chart">
+            <h3>场景使用次数</h3>
+            <div class="bar-chart" id="scenario-chart"></div>
+          </div>
+          <div class="chart">
+            <h3>用户熟悉度分布</h3>
+            <div class="bar-chart" id="familiarity-chart"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🎯 用户操作分析</h2>
+        <div class="charts-container">
+          <div class="chart">
+            <h3>操作类型分布</h3>
+            <div class="bar-chart" id="action-chart"></div>
+          </div>
+          <div class="chart">
+            <h3>热门精酿</h3>
+            <div class="bar-chart" id="top-beers-chart"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📋 推荐历史记录</h2>
+        <div id="history-container"></div>
+      </div>
+
+      <div class="detail-panel" id="detail-panel">
+        <h3>推荐详情</h3>
+        <div class="detail-grid" id="detail-grid"></div>
+        <h4>用户操作记录</h4>
+        <div class="actions-list" id="actions-list"></div>
+        <button class="btn" onclick="closeDetailPanel()" style="margin-top: 20px;">关闭详情</button>
+      </div>
+    </div>
+
+    <script src="js/analytics.js"></script>
+    <script>
+      function loadAnalytics() {
+        const stats = analytics.getStatistics();
+        
+        document.getElementById('total-requests').textContent = stats.totalRequests;
+        document.getElementById('total-results').textContent = stats.totalResults;
+        document.getElementById('total-actions').textContent = stats.totalActions;
+        document.getElementById('beginner-count').textContent = stats.familiarityBreakdown.beginner;
+        
+        renderScenarioChart(stats.scenarioBreakdown);
+        renderFamiliarityChart(stats.familiarityBreakdown);
+        renderActionChart(stats.actionBreakdown);
+        renderTopBeersChart(stats.topBeers);
+        renderHistoryTable();
+      }
+
+      function renderScenarioChart(data) {
+        const container = document.getElementById('scenario-chart');
+        const entries = Object.entries(data);
+        
+        if (entries.length === 0) {
+          container.innerHTML = '<div class="empty-state">暂无数据</div>';
+          return;
+        }
+        
+        const max = Math.max(...entries.map(([, value]) => value));
+        
+        container.innerHTML = entries.map(([key, value]) => `
+          <div class="bar-item">
+            <div class="bar-label">${getScenarioLabel(key)}</div>
+            <div class="bar-container">
+              <div class="bar-fill" style="width: ${(value / max) * 100}%">${value}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderFamiliarityChart(data) {
+        const container = document.getElementById('familiarity-chart');
+        const entries = Object.entries(data);
+        
+        if (entries.length === 0) {
+          container.innerHTML = '<div class="empty-state">暂无数据</div>';
+          return;
+        }
+        
+        const max = Math.max(...entries.map(([, value]) => value));
+        
+        container.innerHTML = entries.map(([key, value]) => `
+          <div class="bar-item">
+            <div class="bar-label">${getFamiliarityLabel(key)}</div>
+            <div class="bar-container">
+              <div class="bar-fill" style="width: ${(value / max) * 100}%">${value}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderActionChart(data) {
+        const container = document.getElementById('action-chart');
+        const entries = Object.entries(data);
+        
+        if (entries.length === 0) {
+          container.innerHTML = '<div class="empty-state">暂无数据</div>';
+          return;
+        }
+        
+        const max = Math.max(...entries.map(([, value]) => value));
+        
+        container.innerHTML = entries.map(([key, value]) => `
+          <div class="bar-item">
+            <div class="bar-label">${getActionLabel(key)}</div>
+            <div class="bar-container">
+              <div class="bar-fill" style="width: ${(value / max) * 100}%">${value}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderTopBeersChart(data) {
+        const container = document.getElementById('top-beers-chart');
+        const entries = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        
+        if (entries.length === 0) {
+          container.innerHTML = '<div class="empty-state">暂无数据</div>';
+          return;
+        }
+        
+        const max = Math.max(...entries.map(([, value]) => value));
+        
+        container.innerHTML = entries.map(([key, value]) => `
+          <div class="bar-item">
+            <div class="bar-label">${key}</div>
+            <div class="bar-container">
+              <div class="bar-fill" style="width: ${(value / max) * 100}%">${value}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderHistoryTable() {
+        const container = document.getElementById('history-container');
+        const history = analytics.getRecommendationHistory(50);
+        
+        if (history.length === 0) {
+          container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>暂无推荐历史记录</p></div>';
+          return;
+        }
+        
+        const uniqueRecommendations = {};
+        history.forEach(record => {
+          if (record.type === 'request' && record.recommendationId) {
+            uniqueRecommendations[record.recommendationId] = record;
+          }
+        });
+        
+        const recommendations = Object.values(uniqueRecommendations).reverse();
+        
+        container.innerHTML = `
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>时间</th>
+                <th>场景</th>
+                <th>熟悉度</th>
+                <th>心情</th>
+                <th>口味</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${recommendations.map(record => `
+                <tr>
+                  <td>${formatTimestamp(record.timestamp)}</td>
+                  <td>${getScenarioLabel(record.data.scenario)}</td>
+                  <td>${getFamiliarityLabel(record.data.familiarity)}</td>
+                  <td>${record.data.userInput?.mood || '-'}</td>
+                  <td>${record.data.userInput?.taste || '-'}</td>
+                  <td>
+                    <button class="btn" onclick="showDetail('${record.recommendationId}')">查看详情</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+
+      function showDetail(recommendationId) {
+        const summary = analytics.getRecommendationSummary(recommendationId);
+        
+        if (!summary) {
+          alert('未找到推荐详情');
+          return;
+        }
+        
+        const detailGrid = document.getElementById('detail-grid');
+        detailGrid.innerHTML = `
+          <div class="detail-item">
+            <div class="label">推荐ID</div>
+            <div class="value">${summary.recommendationId}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">时间</div>
+            <div class="value">${formatTimestamp(summary.timestamp)}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">使用场景</div>
+            <div class="value">${getScenarioLabel(summary.scenario)}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">用户熟悉度</div>
+            <div class="value">${getFamiliarityLabel(summary.familiarity)}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">心情状态</div>
+            <div class="value">${summary.userInput?.mood || '-'}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">口味偏好</div>
+            <div class="value">${summary.userInput?.taste || '-'}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">酒花偏好</div>
+            <div class="value">${summary.userInput?.hop || '-'}</div>
+          </div>
+          <div class="detail-item">
+            <div class="label">精酿风格</div>
+            <div class="value">${summary.userInput?.style || '-'}</div>
+          </div>
+        `;
+        
+        const actionsList = document.getElementById('actions-list');
+        if (summary.actions && summary.actions.length > 0) {
+          actionsList.innerHTML = summary.actions.map(action => `
+            <div class="action-item">
+              <span class="action-type">${getActionLabel(action.actionType)} - ${action.beerName || '-'}</span>
+              <span class="timestamp">${formatTimestamp(action.timestamp)}</span>
+            </div>
+          `).join('');
+        } else {
+          actionsList.innerHTML = '<div class="empty-state">暂无操作记录</div>';
+        }
+        
+        document.getElementById('detail-panel').classList.add('active');
+        document.getElementById('detail-panel').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      function closeDetailPanel() {
+        document.getElementById('detail-panel').classList.remove('active');
+      }
+
+      function exportData() {
+        if (confirm('确定要导出分析数据吗？')) {
+          analytics.exportAnalyticsData();
+        }
+      }
+
+      function clearData() {
+        if (confirm('确定要清除所有分析数据吗？此操作不可恢复！')) {
+          analytics.clearAnalyticsData();
+          loadAnalytics();
+        }
+      }
+
+      function getScenarioLabel(scenario) {
+        const labels = {
+          'relax': '放松',
+          'explore': '探索',
+          'pairing': '搭配'
+        };
+        return labels[scenario] || scenario;
+      }
+
+      function getFamiliarityLabel(familiarity) {
+        const labels = {
+          'beginner': '新手',
+          'advanced': '进阶'
+        };
+        return labels[familiarity] || familiarity;
+      }
+
+      function getActionLabel(action) {
+        const labels = {
+          'buy': '购买',
+          'favorite': '收藏',
+          'view': '查看'
+        };
+        return labels[action] || action;
+      }
+
+      function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        return date.toLocaleString('zh-CN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      window.addEventListener('load', loadAnalytics);
+    </script>
+  </body>
+</html>
